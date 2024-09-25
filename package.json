@@ -1,23 +1,46 @@
 {
-  "name": "8051-compiler",
-  "displayName": "8051-compiler",
+  "name": "cimol.micro-intellisense",
+  "displayName": "cimol.micro-intellisense",
   "description": "",
   "version": "0.0.1",
+  "publisher": "edsonfischborn",
   "engines": {
     "vscode": "^1.93.0"
   },
-  "categories": [
-    "Other"
+  "extensionDependencies": [
+    "ms-vscode.cpptools"
   ],
-  "activationEvents": [],
+  "categories": [
+    "Language Packs",
+    "Education"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "8051-compiler.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "micro",
+          "title": "micro",
+          "icon": "assets/activityBarIcon.svg"
+        }
+      ]
+    },
+    "views": {
+      "micro": [
+        {
+          "id": "nodeDependencies",
+          "name": "Node Dependencies",
+          "icon": "assets/activityBarIcon.svg",
+          "contextualTitle": "Package Explorer"
+        }
+      ]
+    },
+    "commands": [],
+    "menus": {},
+    "configuration": []
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",
