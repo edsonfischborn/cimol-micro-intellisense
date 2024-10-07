@@ -1,6 +1,6 @@
-# cimol.micro-intellisense
+# cimol-micro-intellisense
 
-**Description:** The "cimol.micro-intellisense" is an extension developed to assist in microcontroller development. It supports the c_cpp extension without the need for configuration.
+**Description:** The "cimol-micro-intellisense" is an extension developed to assist in microcontroller development. It supports the c_cpp extension without the need for configuration.
 
 ![UI](./assets/extUi.png)
 
@@ -12,6 +12,6 @@
 
 ## For more
 
-- [Github](https://github.com/edsonfischborn/cimol.micro-intellisense)
+- [Github](https://github.com/edsonfischborn/cimol-micro-intellisense)
 
 By [edsonfischborn](https://www.linkedin.com/in/edsonfischborn) Initially developed for [CIMOL](https://www.cimol.g12.br/)

@@ -25,17 +25,17 @@ export class Setup {
 
   private static registerCommands = (context: vscode.ExtensionContext) => {
     const compile8051Command = vscode.commands.registerCommand(
-      'cimol.micro-intellisense.compiler.8051',
+      'cimol-micro-intellisense.compiler.8051',
       compile8051.exec,
     );
 
     const compilePcCommand = vscode.commands.registerCommand(
-      'cimol.micro-intellisense.compiler.pc',
+      'cimol-micro-intellisense.compiler.pc',
       compilePc.exec,
     );
 
     const execPcCommand = vscode.commands.registerCommand(
-      'cimol.micro-intellisense.compiler.runPc',
+      'cimol-micro-intellisense.compiler.runPc',
       execPc.exec,
     );
 

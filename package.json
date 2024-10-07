@@ -1,12 +1,13 @@
 {
-  "name": "cimol.micro-intellisense",
-  "displayName": "cimol.micro-intellisense",
+  "name": "cimol-micro-intellisense",
+  "displayName": "cimol-micro-intellisense",
   "description": "Supports development for microcontrollers.",
+  "license": "MIT",
   "version": "0.0.1",
   "publisher": "edsonfischborn",
   "repository": {
     "type": "git",
-    "url": "https://github.com/edsonfischborn/cimol.micro-intellisense"
+    "url": "https://github.com/edsonfischborn/cimol-micro-intellisense"
   },
   "icon": "assets/icon.png",
   "engines": {
@@ -54,38 +55,38 @@
     },
     "commands": [
       {
-        "command": "cimol.micro-intellisense.compiler.8051",
+        "command": "cimol-micro-intellisense.compiler.8051",
         "title": "Compiler(c/8051): compile for 8051"
       },
       {
-        "command": "cimol.micro-intellisense.compiler.pc",
+        "command": "cimol-micro-intellisense.compiler.pc",
         "title": "Compiler(c): compile for PC"
       },
       {
-        "command": "cimol.micro-intellisense.compiler.runPc",
+        "command": "cimol-micro-intellisense.compiler.runPc",
         "title": "Compiler(c): run exe PC"
       }
     ],
     "keybindings": [
       {
-        "command": "cimol.micro-intellisense.compiler.8051",
+        "command": "cimol-micro-intellisense.compiler.8051",
         "key": "ctrl+alt+f5"
       },
       {
-        "command": "cimol.micro-intellisense.compiler.pc",
+        "command": "cimol-micro-intellisense.compiler.pc",
         "key": "ctrl+alt+f6"
       },
       {
-        "command": "cimol.micro-intellisense.compiler.runPc",
+        "command": "cimol-micro-intellisense.compiler.runPc",
         "key": "ctrl+alt+f7"
       }
     ],
     "menus": {},
     "configuration": [
       {
-        "title": "cimol.micro-intellisense",
+        "title": "cimol-micro-intellisense",
         "properties": {
-          "cimol.micro-intellisense.compiler.includePaths": {
+          "cimol-micro-intellisense.compiler.includePaths": {
             "title": "Include Paths",
             "type": "array",
             "markdownDescription": "Use `${workspaceFolder}` for reference current workspace (root folder). Will be added automatic in the c/c++ extension. **DONT USE `*`**; Example values: `C:/8051/sdcc/include`, `${workspaceFolder}/lib`",
@@ -94,17 +95,17 @@
             },
             "order": 0
           },
-          "cimol.micro-intellisense.compiler.sdccExe": {
+          "cimol-micro-intellisense.compiler.sdccExe": {
             "markdownDescription": "SDCC compiler `.exe`, used for compile `.c` -> `8051(.hex)`. Example value `C:/8051/sdcc/bin/sdcc.exe`",
             "type": "string",
             "order": 1
           },
-          "cimol.micro-intellisense.compiler.tccExe": {
+          "cimol-micro-intellisense.compiler.tccExe": {
             "markdownDescription": "Tiny C compiler `.exe`, used for compile `.c` -> `PC(.exe)`. Example value `C:/8051/tcc/tcc.exe`",
             "type": "string",
             "order": 2
           },
-          "cimol.micro-intellisense.compiler.includePathsOnCompile": {
+          "cimol-micro-intellisense.compiler.includePathsOnCompile": {
             "markdownDescription": "If true, the `compiler.includePaths` array will be included in SDCC and Tiny C compiler commands",
             "type": "boolean",
             "order": 3

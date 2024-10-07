@@ -43,7 +43,7 @@ export const CompilerSidebar = () => {
         <ul className={styles.sectionActionsList}>
           <ActionButton
             label="Compile - 8051"
-            tip={keyBindings['cimol.micro-intellisense.compiler.8051']}
+            tip={keyBindings['cimol-micro-intellisense.compiler.8051']}
             onActionClick={() => dispathMessage('compile8051')}
             infoIcon={<Chip size={17} />}
             actionIcon={hammerIcon}
@@ -56,7 +56,7 @@ export const CompilerSidebar = () => {
         <ul className={styles.sectionActionsList}>
           <ActionButton
             label="Compile - PC"
-            tip={keyBindings['cimol.micro-intellisense.compiler.pc']}
+            tip={keyBindings['cimol-micro-intellisense.compiler.pc']}
             onActionClick={() => dispathMessage('compilePc')}
             infoIcon={<Monitor size={16} />}
             actionIcon={hammerIcon}
@@ -64,7 +64,7 @@ export const CompilerSidebar = () => {
 
           <ActionButton
             label="Run - PC"
-            tip={keyBindings['cimol.micro-intellisense.compiler.runPc']}
+            tip={keyBindings['cimol-micro-intellisense.compiler.runPc']}
             onActionClick={() => dispathMessage('execPc')}
             infoIcon={<MonitorPlay size={16.5} />}
             actionIcon={playIcon}
