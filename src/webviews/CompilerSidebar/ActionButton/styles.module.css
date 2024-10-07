@@ -1,0 +1,80 @@
+.compilerSidebarActionButton {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.625rem;
+  background: var(--vscode-settings-rowHoverBackground);
+  border: 0.063rem solid transparent;
+  white-space: nowrap;
+  min-width: 10rem;
+}
+
+.compilerSidebarActionButton .infoIconContainer {
+  width: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.compilerSidebarActionButton:hover {
+  background: var(--vscode-settings-focusedRowBackground);
+  border: 0.063rem solid var(--vscode-settings-focusedRowBorder);
+}
+
+.compilerSidebarActionButton .description {
+  display: flex;
+  align-items: center;
+  gap: 0 0.25rem;
+}
+
+.compilerSidebarActionButton .descriptionText {
+  font-size: 0.75rem;
+  user-select: none;
+  color: var(--vscode-icon-foreground);
+}
+
+.compilerSidebarActionButton .button {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+  background: transparent;
+}
+
+.compilerSidebarActionButton .button:hover {
+  position: relative;
+  border-radius: 0.5rem;
+  filter: brightness(0.75);
+  background: var(--vscode-settings-focusedRowBackground);
+}
+
+.compilerSidebarActionButton .button:hover .buttonTip {
+  display: flex;
+}
+
+.compilerSidebarActionButton .buttonTip {
+  position: absolute;
+  display: none;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -1.5rem;
+  background: var(--vscode-settings-focusedRowBorder);
+  border-radius: 0.25rem;
+  font-size: 0.65rem;
+  padding: 0.125rem 0.25rem;
+  color: var(--vscode-icon-foreground);
+}
+
+.compilerSidebarActionButton .buttonTip::after {
+  content: ' ';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--vscode-settings-focusedRowBorder) transparent transparent
+    transparent;
+}

@@ -1,0 +1,23 @@
+.compilerSidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0px;
+}
+
+.compilerSidebar .section + .section {
+  margin-top: 0.5rem;
+}
+
+.compilerSidebar .sectionTitle {
+  color: var(--vscode-icon-foreground);
+  font-weight: 500;
+}
+
+.compilerSidebar .sectionActionsList {
+  list-style: none;
+  margin-top: 0.25rem;
+}
+
+.compilerSidebar .sectionActionsList > * + * {
+  margin-top: 0.25rem;
+}
