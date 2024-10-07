@@ -1,9 +1,6 @@
-import * as vscode from "vscode";
-import { logger } from "./logger";
-import { EXT_NAME } from "./constants";
+import { Setup } from '@core/shared/Setup';
+import * as vscode from 'vscode';
 
 export const activate = async (context: vscode.ExtensionContext) => {
-  logger(`Starting ${EXT_NAME}...`);
-
-  logger(`Started ${EXT_NAME}!`);
+  Setup.onActivate(context);
 };

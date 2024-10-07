@@ -1,0 +1,11 @@
+.generalSidebar {
+  padding: 0.5rem 0px;
+}
+
+.generalSidebar .sectionActionsList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+}

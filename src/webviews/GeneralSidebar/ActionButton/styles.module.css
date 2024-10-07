@@ -1,0 +1,26 @@
+.generalSidebarActionButton .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 3.25rem;
+  width: 4.25rem;
+  border: 0.063rem solid transparent;
+  background: var(--vscode-settings-rowHoverBackground);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  row-gap: 0.25rem;
+}
+
+.generalSidebarActionButton .button:hover {
+  background: var(--vscode-settings-focusedRowBackground);
+  border: 0.063rem solid var(--vscode-settings-focusedRowBorder);
+}
+
+.generalSidebarActionButton .buttonLabel {
+  color: var(--vscode-icon-foreground);
+  font-weight: 500;
+  font-size: 0.75rem;
+}
