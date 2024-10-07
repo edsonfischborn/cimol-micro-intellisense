@@ -1,12 +1,20 @@
 {
   "name": "cimol.micro-intellisense",
   "displayName": "cimol.micro-intellisense",
-  "description": "",
+  "description": "Supports development for microcontrollers.",
   "version": "0.0.1",
   "publisher": "edsonfischborn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edsonfischborn/cimol.micro-intellisense"
+  },
+  "icon": "assets/icon.png",
   "engines": {
     "vscode": "^1.93.0"
   },
+  "os": [
+    "win32"
+  ],
   "extensionDependencies": [
     "ms-vscode.cpptools"
   ],
@@ -22,25 +30,88 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "micro",
-          "title": "micro",
+          "id": "microContainer",
+          "title": "cimol micro intellisense",
           "icon": "assets/activityBarIcon.svg"
         }
       ]
     },
     "views": {
-      "micro": [
+      "microContainer": [
         {
-          "id": "nodeDependencies",
-          "name": "Node Dependencies",
-          "icon": "assets/activityBarIcon.svg",
-          "contextualTitle": "Package Explorer"
+          "type": "webview",
+          "id": "compilerView",
+          "name": "compiler",
+          "contextualTitle": "compiler"
+        },
+        {
+          "type": "webview",
+          "id": "generalView",
+          "name": "general",
+          "contextualTitle": "general"
         }
       ]
     },
-    "commands": [],
+    "commands": [
+      {
+        "command": "cimol.micro-intellisense.compiler.8051",
+        "title": "Compiler(c/8051): compile for 8051"
+      },
+      {
+        "command": "cimol.micro-intellisense.compiler.pc",
+        "title": "Compiler(c): compile for PC"
+      },
+      {
+        "command": "cimol.micro-intellisense.compiler.runPc",
+        "title": "Compiler(c): run exe PC"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "cimol.micro-intellisense.compiler.8051",
+        "key": "ctrl+alt+f5"
+      },
+      {
+        "command": "cimol.micro-intellisense.compiler.pc",
+        "key": "ctrl+alt+f6"
+      },
+      {
+        "command": "cimol.micro-intellisense.compiler.runPc",
+        "key": "ctrl+alt+f7"
+      }
+    ],
     "menus": {},
-    "configuration": []
+    "configuration": [
+      {
+        "title": "cimol.micro-intellisense",
+        "properties": {
+          "cimol.micro-intellisense.compiler.includePaths": {
+            "title": "Include Paths",
+            "type": "array",
+            "markdownDescription": "Use `${workspaceFolder}` for reference current workspace (root folder). Will be added automatic in the c/c++ extension. **DONT USE `*`**; Example values: `C:/8051/sdcc/include`, `${workspaceFolder}/lib`",
+            "items": {
+              "type": "string"
+            },
+            "order": 0
+          },
+          "cimol.micro-intellisense.compiler.sdccExe": {
+            "markdownDescription": "SDCC compiler `.exe`, used for compile `.c` -> `8051(.hex)`. Example value `C:/8051/sdcc/bin/sdcc.exe`",
+            "type": "string",
+            "order": 1
+          },
+          "cimol.micro-intellisense.compiler.tccExe": {
+            "markdownDescription": "Tiny C compiler `.exe`, used for compile `.c` -> `PC(.exe)`. Example value `C:/8051/tcc/tcc.exe`",
+            "type": "string",
+            "order": 2
+          },
+          "cimol.micro-intellisense.compiler.includePathsOnCompile": {
+            "markdownDescription": "If true, the `compiler.includePaths` array will be included in SDCC and Tiny C compiler commands",
+            "type": "boolean",
+            "order": 3
+          }
+        }
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",
@@ -53,20 +124,29 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
     "check-types": "tsc --noEmit",
-    "lint": "eslint src",
+    "lint": "eslint src --fix",
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.93.0",
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
+    "@types/react": "^18.3.9",
+    "@types/react-dom": "^18.3.0",
+    "@types/vscode": "^1.93.0",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
-    "eslint": "^9.9.1",
-    "esbuild": "^0.23.1",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.5.4",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.23.1",
+    "eslint": "^9.9.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
