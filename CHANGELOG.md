@@ -13,3 +13,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Run PC.
 - Settings.
 - Keybindings.
+
+## [0.0.2] - 2024-10-07
+
+### Fixed
+
+- Fixed keybindings button url.

@@ -3,7 +3,7 @@
   "displayName": "cimol-micro-intellisense",
   "description": "Supports development for microcontrollers.",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "edsonfischborn",
   "repository": {
     "type": "git",

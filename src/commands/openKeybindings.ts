@@ -7,7 +7,7 @@ class OpenKeybindings implements CommandListenner<null> {
   readonly command: string = 'openKeybindings';
 
   readonly exec = () => {
-    const url = `@ext:${Constants.EXT_AUTHOR}.${Constants.EXT_NAME}`;
+    const url = Constants.EXT_NAME;
 
     vscode.commands.executeCommand(
       'workbench.action.openGlobalKeybindings',
