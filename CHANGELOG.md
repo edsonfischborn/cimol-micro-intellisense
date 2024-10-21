@@ -19,3 +19,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Fixed
 
 - Fixed keybindings button url.
+
+## [0.0.3] - 2024-10-21
+
+### Added
+
+- Allow auto save before compile.

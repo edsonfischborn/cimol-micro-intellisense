@@ -29,6 +29,9 @@ class Compile8051 extends CurrentFileHandler implements CommandListenner<null> {
     }
 
     Workspace.runWithProgress('compiling...', async () => {
+      if (Settings.ext.getAllowSaveBeforeCompile()) {
+        await Workspace.saveAll();
+      }
       await this.compileWithSdcc(currentFile);
       Workspace.showDocument(this.getActiveDocument() as vscode.TextDocument);
     });

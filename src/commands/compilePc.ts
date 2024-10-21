@@ -29,6 +29,9 @@ class CompilePc extends CurrentFileHandler implements CommandListenner<null> {
     }
 
     Workspace.runWithProgress('compiling...', async () => {
+      if (Settings.ext.getAllowSaveBeforeCompile()) {
+        await Workspace.saveAll();
+      }
       await this.compileWithTcc(currentFile);
       Workspace.showDocument(this.getActiveDocument() as vscode.TextDocument);
     });

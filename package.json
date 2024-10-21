@@ -3,7 +3,7 @@
   "displayName": "cimol-micro-intellisense",
   "description": "Supports development for microcontrollers.",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "edsonfischborn",
   "repository": {
     "type": "git",
@@ -109,6 +109,11 @@
             "markdownDescription": "If true, the `compiler.includePaths` array will be included in SDCC and Tiny C compiler commands",
             "type": "boolean",
             "order": 3
+          },
+          "cimol-micro-intellisense.compiler.saveBeforeCompile": {
+            "markdownDescription": "If true, save all workspace files before compiler commands",
+            "type": "boolean",
+            "order": 4
           }
         }
       }
