@@ -26,4 +26,8 @@ export class Workspace {
   static showDocument = (document: vscode.TextDocument) => {
     vscode.window.showTextDocument(document, { preview: false });
   };
+
+  static saveAll = async () => {
+    await vscode.workspace.saveAll(true);
+  };
 }

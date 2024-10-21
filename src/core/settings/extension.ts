@@ -10,6 +10,7 @@ export class ExtensionSettings extends SettingsHandler {
   private sdccExeKey = 'compiler.sdccExe';
   private tccExeKey = 'compiler.tccExe';
   private includePathsOnCompileKey = 'compiler.includePathsOnCompile';
+  private saveBeforeCompile = 'compiler.saveBeforeCompile';
 
   constructor() {
     super(Constants.EXT_NAME);
@@ -65,5 +66,9 @@ export class ExtensionSettings extends SettingsHandler {
 
   readonly getAllowIncludePathsOnCompile = () => {
     return this.inspectConfig<boolean>(this.includePathsOnCompileKey, false);
+  };
+
+  readonly getAllowSaveBeforeCompile = () => {
+    return this.inspectConfig<boolean>(this.saveBeforeCompile, false);
   };
 }
