@@ -9,16 +9,19 @@ import { GlobalWebViewProvider } from '@core/GlobalWebViewProvider';
 import { SyncSettings } from '@core/SyncSettings';
 import * as vscode from 'vscode';
 
+import { Context } from './Context';
 import { Keybindings } from './Keybindings';
 import { Logger } from './Logger';
 
 export class Setup {
-  static onActivate = (context: vscode.ExtensionContext) => {
+  static onActivate = async (context: vscode.ExtensionContext) => {
     Logger.log(`Starting ${Constants.EXT_NAME}...`);
 
-    this.createViews(context);
+    Context.setContext(context);
     this.registerCommands(context);
-    SyncSettings.startSync();
+    this.createViews(context);
+    await SyncSettings.startSync();
+    await Context.afterActivation();
 
     Logger.log(`Started ${Constants.EXT_NAME}!`);
   };
@@ -47,8 +50,8 @@ export class Setup {
   };
 
   private static createViews = (context: vscode.ExtensionContext) => {
-    const generalView = new GlobalWebViewProvider(context, 'generalView');
-    const compilerView = new GlobalWebViewProvider(context, 'compilerView');
+    const generalView = new GlobalWebViewProvider('generalView');
+    const compilerView = new GlobalWebViewProvider('compilerView');
 
     generalView.setWebViewListenners(openLink, openSettings, openKeybindings);
     compilerView.setWebViewListenners(compile8051, compilePc, execPc);

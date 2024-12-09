@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+import { Context } from './shared/Context';
 import { Logger } from './shared/Logger';
 import { CommandListenner } from './types/CommandListenner';
 
@@ -9,10 +10,7 @@ export class GlobalWebViewProvider implements vscode.WebviewViewProvider {
   private webViewListenners: CommandListenner<any>[];
   private readonly rootSegments = ['dist', 'webviews'];
 
-  constructor(
-    private readonly extContext: vscode.ExtensionContext,
-    private readonly viewId: string,
-  ) {
+  constructor(private readonly viewId: string) {
     this._onRender = () => {};
     this.webViewListenners = [];
   }
@@ -76,7 +74,7 @@ export class GlobalWebViewProvider implements vscode.WebviewViewProvider {
   };
 
   private joinPath = (...segments: string[]) => {
-    return vscode.Uri.joinPath(this.extContext.extensionUri, ...segments);
+    return vscode.Uri.joinPath(Context.getExtUri(), ...segments);
   };
 
   private getAsWebViewUri = (

@@ -2,27 +2,31 @@ import * as vscode from 'vscode';
 
 import { Constants } from './Constants';
 import { Settings } from './settings';
+import { Context } from './shared/Context';
 
 export class SyncSettings {
   static startSync = async () => {
-    this.enforceConfig();
+    if (Context.isFirstActivation()) {
+      await this.onFirstActivation();
+    }
 
-    vscode.workspace.onDidChangeConfiguration((event) => {
-      const listenners = [Constants.EXT_NAME, Constants.CPP_EXT_ALIAS];
+    vscode.workspace.onDidChangeConfiguration(async (event) => {
+      const listenners = [Constants.EXT_NAME, Constants.MS_CPP_EXT_ALIAS];
       const isSyncRequired = listenners.some((listenner) =>
         event.affectsConfiguration(listenner),
       );
 
       if (isSyncRequired) {
-        this.enforceConfig();
+        await this.syncIncludePaths();
       }
     });
   };
 
-  private static enforceConfig = async () => {
-    await Settings.cpp.setRequiredConfig();
-    await Settings.c.setRequiredConfig();
-    await Settings.ext.setRequiredConfig();
+  private static onFirstActivation = async () => {
+    await Settings.msCppExt.resetToDefaults();
+    await Settings.c.resetToDefaults();
+    await Settings.ext.resetToDefaults();
+    await Settings.editor.resetToDefaults();
     await this.syncIncludePaths();
   };
 
@@ -30,6 +34,7 @@ export class SyncSettings {
     const extIncludePaths = Settings.ext.getIncludePaths();
     const includePaths = [...new Set([...extIncludePaths])];
 
-    await Settings.cpp.setIncludePaths(includePaths);
+    await Settings.ext.setIncludePaths(includePaths);
+    await Settings.msCppExt.setIncludePaths(includePaths);
   };
 }

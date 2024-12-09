@@ -5,35 +5,32 @@ export class ExtensionSettings extends SettingsHandler {
   private defaultSdccExe = 'C:/8051/sdcc/bin/sdcc.exe';
   private defaultTccExe = 'C:/8051/tcc/tcc.exe';
   private defaultIncludePaths = ['C:/8051/sdcc/include'];
+  private defaultSaveBfCompile = true;
 
+  private includePathsOnCompileKey = 'compiler.includePathsOnCompile';
   private pathsKey = 'compiler.includePaths';
   private sdccExeKey = 'compiler.sdccExe';
   private tccExeKey = 'compiler.tccExe';
-  private includePathsOnCompileKey = 'compiler.includePathsOnCompile';
-  private saveBeforeCompile = 'compiler.saveBeforeCompile';
+  private saveBfCompileKey = 'compiler.saveBeforeCompile';
 
   constructor() {
     super(Constants.EXT_NAME);
   }
 
-  readonly setRequiredConfig = async () => {
-    if (!this.getSdccExePath()) {
-      await this.resetSdccExePath();
-    }
-
-    if (!this.getTccExePath()) {
-      await this.resetTccExePath();
-    }
-
-    if (this.getIncludePaths()?.length <= 0) {
-      await this.resetIncludePaths();
-    }
+  public resetToDefaults = async () => {
+    await this.updateConfig(this.saveBfCompileKey, this.defaultSaveBfCompile);
+    await this.updateConfig(this.sdccExeKey, this.defaultSdccExe);
+    await this.updateConfig(this.tccExeKey, this.defaultTccExe);
+    await this.updateConfig(this.pathsKey, this.defaultIncludePaths);
   };
 
   readonly getIncludePaths = (workspaceDir?: string) => {
-    const includePaths = this.inspectConfig<string[]>(this.pathsKey, []);
     const workspaceRgxp = /\$\{workspaceFolder\}/g;
     const workspaceFolder = workspaceDir ?? '${workspaceFolder}';
+    const includePaths = this.inspectConfig<string[]>(
+      this.pathsKey,
+      this.defaultIncludePaths,
+    );
 
     return includePaths.map((path) =>
       path?.replace(workspaceRgxp, workspaceFolder)?.replace(/\\/g, '/'),
@@ -44,31 +41,19 @@ export class ExtensionSettings extends SettingsHandler {
     return this.updateConfig(this.pathsKey, paths);
   };
 
-  readonly resetIncludePaths = () => {
-    return this.updateConfig(this.pathsKey, this.defaultIncludePaths);
-  };
-
   readonly getSdccExePath = () => {
-    return this.inspectConfig<string>(this.sdccExeKey, '');
-  };
-
-  readonly resetSdccExePath = () => {
-    return this.updateConfig(this.sdccExeKey, this.defaultSdccExe);
+    return this.inspectConfig<string>(this.sdccExeKey, this.defaultSdccExe);
   };
 
   readonly getTccExePath = () => {
-    return this.inspectConfig<string>(this.tccExeKey, '');
+    return this.inspectConfig<string>(this.tccExeKey, this.defaultTccExe);
   };
 
-  readonly resetTccExePath = () => {
-    return this.updateConfig(this.tccExeKey, this.defaultTccExe);
+  readonly getAllowSaveBeforeCompile = () => {
+    return this.inspectConfig<boolean>(this.saveBfCompileKey, false);
   };
 
   readonly getAllowIncludePathsOnCompile = () => {
     return this.inspectConfig<boolean>(this.includePathsOnCompileKey, false);
-  };
-
-  readonly getAllowSaveBeforeCompile = () => {
-    return this.inspectConfig<boolean>(this.saveBeforeCompile, false);
   };
 }

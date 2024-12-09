@@ -1,9 +1,12 @@
 import * as vscode from 'vscode';
-
 export abstract class SettingsHandler {
   constructor(
     private readonly settingsAliasKey: string | undefined = undefined,
   ) {}
+
+  public resetToDefaults = async (): Promise<void> => {
+    throw new Error('Method is not implemented');
+  };
 
   protected updateConfig = async (sectionToUpdate: string, value: any) => {
     const config = vscode.workspace.getConfiguration(this.settingsAliasKey);
@@ -17,6 +20,11 @@ export abstract class SettingsHandler {
   ): T => {
     const config = vscode.workspace.getConfiguration(this.settingsAliasKey);
     const inspected = config.inspect<T>(sectionToInspect);
-    return inspected?.globalValue || defaultValue;
+
+    if (inspected?.globalValue === undefined) {
+      return defaultValue;
+    }
+
+    return inspected?.globalValue;
   };
 }

@@ -1,0 +1,23 @@
+import * as vscode from 'vscode';
+
+let __context = {} as vscode.ExtensionContext;
+
+export class Context {
+  private static firstActivationKey = 'flag_isFirstActivation';
+
+  static setContext = (ctx: vscode.ExtensionContext) => {
+    __context = ctx;
+  };
+
+  static isFirstActivation = () => {
+    return __context.globalState.get<boolean>(this.firstActivationKey, true);
+  };
+
+  static afterActivation = async () => {
+    await __context.globalState.update(this.firstActivationKey, false);
+  };
+
+  static getExtUri = () => {
+    return __context.extensionUri;
+  };
+}
