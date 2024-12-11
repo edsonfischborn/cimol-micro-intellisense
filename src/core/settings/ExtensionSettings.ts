@@ -7,7 +7,6 @@ export class ExtensionSettings extends SettingsHandler {
   private defaultIncludePaths = ['C:/8051/sdcc/include'];
   private defaultSaveBfCompile = true;
 
-  private includePathsOnCompileKey = 'compiler.includePathsOnCompile';
   private pathsKey = 'compiler.includePaths';
   private sdccExeKey = 'compiler.sdccExe';
   private tccExeKey = 'compiler.tccExe';
@@ -51,9 +50,5 @@ export class ExtensionSettings extends SettingsHandler {
 
   readonly getAllowSaveBeforeCompile = () => {
     return this.inspectConfig<boolean>(this.saveBfCompileKey, false);
-  };
-
-  readonly getAllowIncludePathsOnCompile = () => {
-    return this.inspectConfig<boolean>(this.includePathsOnCompileKey, false);
   };
 }

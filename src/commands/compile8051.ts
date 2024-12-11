@@ -79,8 +79,6 @@ class Compile8051 extends CurrentFileHandler implements CommandListenner<null> {
   private readonly getCompileCommand = (workingFile: FileProps) => {
     const { path, dir, nameWithoutExt } = workingFile;
     const compilerPath = Settings.ext.getSdccExePath();
-    const allowIncludePaths = Settings.ext.getAllowIncludePathsOnCompile();
-    const includePaths = Settings.ext.getIncludePaths(this.getWorkspacePath());
     const compiledFileName = this.generateFileName(nameWithoutExt, 'hex');
     const compiledFilePath = resolve(dir, compiledFileName);
 
@@ -93,11 +91,11 @@ class Compile8051 extends CurrentFileHandler implements CommandListenner<null> {
       '--out-fmt-ihx',
     ];
 
-    if (allowIncludePaths) {
+    /*  if (allowIncludePaths) {
       for (const includePath of includePaths) {
         args.push(`-I${includePath}`);
       }
-    }
+    } */
 
     const argsStr = args?.join(' ');
     return `${compilerPath} ${argsStr} ${path} -o ${compiledFilePath}`;

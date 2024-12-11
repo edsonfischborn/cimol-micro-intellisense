@@ -70,16 +70,15 @@ class CompilePc extends CurrentFileHandler implements CommandListenner<null> {
 
   private readonly getCompileCommand = (workingFile: FileProps) => {
     const compilerPath = Settings.ext.getTccExePath();
-    const allowIncludePaths = Settings.ext.getAllowIncludePathsOnCompile();
     const includePaths = Settings.ext.getIncludePaths(this.getWorkspacePath());
     const compiledFilePath = this.getCompiledFilePath(workingFile);
 
     let includeArgs = '';
-    if (allowIncludePaths) {
+    /*    if (allowIncludePaths) {
       for (const path of includePaths) {
         includeArgs += ` -I ${path}`;
       }
-    }
+    } */
 
     return `${compilerPath}${includeArgs} -o ${compiledFilePath} ${workingFile.path}`;
   };
