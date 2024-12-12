@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 let __context = {} as vscode.ExtensionContext;
 
 export class Context {
-  private static firstActivationKey = 'flag_isFirstActivation' + Date.now();
+  private static firstActivationKey = 'flag_isFirstActivation';
 
   static setContext = (ctx: vscode.ExtensionContext) => {
     __context = ctx;

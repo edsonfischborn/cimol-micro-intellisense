@@ -49,7 +49,7 @@ class Compile8051 extends AbstractCommandListenner<null> {
     try {
       const time = new Date().toLocaleTimeString();
       const compileCommand = this.getCompileCommand(workingFile);
-      const successMsg = `\nCOMPILATION SUCCESSFUL! Generated files: ${outputFileName} - ISIS / 8051 | ${memoryFileName} - memory layout`;
+      const filesMsg = `Generated files: ${outputFileName} - ISIS / 8051 | ${memoryFileName} - memory layout`;
 
       await this.deleteCompiledFiles(dir, nameWithoutExt);
 
@@ -58,7 +58,7 @@ class Compile8051 extends AbstractCommandListenner<null> {
       Logger.log(`Compiling ${workingFile.name}... ${time}`);
       Logger.log(compileCommand);
 
-      execSync(compileCommand, {
+      const sdccMsg = execSync(compileCommand, {
         stdio: 'pipe',
         encoding: 'utf-8',
       });
@@ -67,10 +67,21 @@ class Compile8051 extends AbstractCommandListenner<null> {
         throw new Error('Error: Compiled file not found');
       }
 
-      Logger.log(successMsg);
+      if (sdccMsg) {
+        Logger.log('\nCOMPILATION SUCCESSFUL WITH WARNINGS! ⚠️⚠️');
+        Logger.log(filesMsg);
+        Logger.log('Warning(s):');
+        Logger.log(sdccMsg);
+
+        return;
+      }
+
+      Logger.log('\nCOMPILATION SUCCESSFUL! ✅️🚀');
+      Logger.log(filesMsg);
     } catch (ex: any) {
       const msg = ex?.stdout || ex?.message || 'Unknown Error';
-      Logger.log('\nCOMPILE ERROR. VERIFY THE COMPILER MESSAGE BELOW: ');
+      Logger.log('\nCOMPILE ERROR! 🔴🐛');
+      Logger.log('Error(s): ');
       Logger.log(msg);
 
       await this.deleteCompiledFiles(dir, nameWithoutExt);

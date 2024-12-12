@@ -45,7 +45,6 @@ class CompilePc extends AbstractCommandListenner<null> {
       const time = new Date().toLocaleTimeString();
       const compileCommand = this.getCompileCommand(workingFile);
       const compiledFileName = this.getCompiledFileName(workingFile);
-      const successMsg = `\nCOMPILATION SUCCESSFUL! Generated file: ${compiledFileName}`;
 
       await this.deleteCompiledFile(workingFile);
 
@@ -63,10 +62,12 @@ class CompilePc extends AbstractCommandListenner<null> {
         throw new Error('Error: Compiled file not found');
       }
 
-      Logger.log(successMsg);
+      Logger.log('\nCOMPILATION SUCCESSFUL! ✅️🚀');
+      Logger.log(`Generated file: ${compiledFileName}`);
     } catch (ex: any) {
       const msg = ex?.stdout || ex?.message || 'Unknown Error';
-      Logger.log('\nCOMPILE ERROR. VERIFY THE COMPILER MESSAGE BELOW: ');
+      Logger.log('\nCOMPILE ERROR! 🔴🐛');
+      Logger.log('Error(s): ');
       Logger.log(msg);
     }
   };
