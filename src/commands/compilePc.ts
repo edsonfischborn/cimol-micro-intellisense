@@ -1,24 +1,25 @@
-import { CurrentFileHandler } from '@core/abstract/CurrentFileHandler';
+import { AbstractCommandListenner } from '@core/abstract/AbstractCommandListenner';
 import { Settings } from '@core/settings';
 import { Alert } from '@core/shared/Alert';
+import { FileTypeListener } from '@core/shared/FileTypeListener';
 import { Logger } from '@core/shared/Logger';
 import { Workspace } from '@core/shared/Workspace';
-import { CommandListenner } from '@core/types/CommandListenner';
 import { FileProps } from '@core/types/FileProps';
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import * as vscode from 'vscode';
 
-class CompilePc extends CurrentFileHandler implements CommandListenner<null> {
-  readonly command: string = 'compilePc';
+class CompilePc extends AbstractCommandListenner<null> {
+  private fileListener: FileTypeListener;
 
   constructor() {
-    super('c');
+    super('cimol-micro-intellisense.compiler.pc');
+    this.fileListener = new FileTypeListener('c');
   }
 
-  readonly exec = () => {
-    const currentFile = this.getCurrentFile();
+  readonly exec = async () => {
+    const currentFile = this.fileListener.getCurrentFile();
 
     if (!currentFile) {
       const msg = 'This file is not of type .c';
@@ -33,7 +34,9 @@ class CompilePc extends CurrentFileHandler implements CommandListenner<null> {
         await Workspace.saveAll();
       }
       await this.compileWithTcc(currentFile);
-      Workspace.showDocument(this.getActiveDocument() as vscode.TextDocument);
+      Workspace.showDocument(
+        this.fileListener.getActiveDocument() as vscode.TextDocument,
+      );
     });
   };
 
@@ -70,15 +73,13 @@ class CompilePc extends CurrentFileHandler implements CommandListenner<null> {
 
   private readonly getCompileCommand = (workingFile: FileProps) => {
     const compilerPath = Settings.ext.getTccExePath();
-    const includePaths = Settings.ext.getIncludePaths(this.getWorkspacePath());
+    const includePaths = Settings.ext.getTccIncludePaths();
     const compiledFilePath = this.getCompiledFilePath(workingFile);
 
     let includeArgs = '';
-    /*    if (allowIncludePaths) {
-      for (const path of includePaths) {
-        includeArgs += ` -I ${path}`;
-      }
-    } */
+    for (const path of includePaths) {
+      includeArgs += ` -I ${path}`;
+    }
 
     return `${compilerPath}${includeArgs} -o ${compiledFilePath} ${workingFile.path}`;
   };

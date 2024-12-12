@@ -65,6 +65,10 @@
       {
         "command": "cimol-micro-intellisense.compiler.runPc",
         "title": "Compiler(c): run exe PC"
+      },
+      {
+        "command": "cimol-micro-intellisense.compiler.changeProfile",
+        "title": "Change compiler profile"
       }
     ],
     "keybindings": [
@@ -79,6 +83,10 @@
       {
         "command": "cimol-micro-intellisense.compiler.runPc",
         "key": "ctrl+alt+f7"
+      },
+      {
+        "command": "cimol-micro-intellisense.compiler.changeProfile",
+        "key": "ctrl+alt+c"
       }
     ],
     "menus": {},
@@ -86,29 +94,49 @@
       {
         "title": "cimol-micro-intellisense",
         "properties": {
-          "cimol-micro-intellisense.compiler.includePaths": {
-            "title": "Include Paths",
-            "type": "array",
-            "markdownDescription": "Use `${workspaceFolder}` for reference current workspace (root folder). Will be added automatic in the c/c++ extension. **DONT USE `*`**; Example values: `C:/8051/sdcc/include`, `${workspaceFolder}/lib`",
-            "items": {
-              "type": "string"
-            },
-            "order": 0
+          "cimol-micro-intellisense.compiler.profile": {
+            "order": 0,
+            "title": "Current compiler profile",
+            "markdownDescription": "Current profile for intellisense and library inclusion during compilation.",
+            "type": "string",
+            "default": "C/8051",
+            "enum": [
+              "C/8051",
+              "C/PC"
+            ]
           },
           "cimol-micro-intellisense.compiler.sdccExe": {
             "markdownDescription": "SDCC compiler `.exe`, used for compile `.c` -> `8051(.hex)`. Example value `C:/8051/sdcc/bin/sdcc.exe`",
             "type": "string",
             "order": 1
           },
+          "cimol-micro-intellisense.compiler.sdccIncludePaths": {
+            "title": "Include Paths for SDCC compiler (8051)",
+            "type": "array",
+            "markdownDescription": "Use `${workspaceFolder}` for reference current workspace (root folder). Will be added automatic in the c/c++ extension. **DONT USE `*`**; Example values: `C:/8051/sdcc/include`, `${workspaceFolder}/lib`",
+            "items": {
+              "type": "string"
+            },
+            "order": 2
+          },
           "cimol-micro-intellisense.compiler.tccExe": {
             "markdownDescription": "Tiny C compiler `.exe`, used for compile `.c` -> `PC(.exe)`. Example value `C:/8051/tcc/tcc.exe`",
             "type": "string",
-            "order": 2
+            "order": 3
+          },
+          "cimol-micro-intellisense.compiler.tccIncludePaths": {
+            "title": "Include Paths for Tiny C compiler (PC)",
+            "type": "array",
+            "markdownDescription": "Use `${workspaceFolder}` for reference current workspace (root folder). Will be added automatic in the c/c++ extension. **DONT USE `*`**; Example values: `C:/8051/tcc/include`, `${workspaceFolder}/lib`",
+            "items": {
+              "type": "string"
+            },
+            "order": 4
           },
           "cimol-micro-intellisense.compiler.saveBeforeCompile": {
             "markdownDescription": "If true, save all workspace files before compiler commands",
             "type": "boolean",
-            "order": 4
+            "order": 5
           }
         }
       }

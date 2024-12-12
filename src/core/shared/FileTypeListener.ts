@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 
 import { FileProps } from '../types/FileProps';
 
-export abstract class CurrentFileHandler {
+export class FileTypeListener {
   private readonly ext: string;
   private activeDocument: vscode.TextDocument | undefined;
 
@@ -15,7 +15,7 @@ export abstract class CurrentFileHandler {
     return str?.replace(/\./, '');
   };
 
-  protected readonly getActiveDocument = () => {
+  public readonly getActiveDocument = () => {
     const editor = vscode.window.activeTextEditor;
     const currentDocument = editor?.document;
 
@@ -26,7 +26,7 @@ export abstract class CurrentFileHandler {
     return this.activeDocument;
   };
 
-  protected readonly getCurrentFile = (): FileProps | undefined => {
+  public readonly getCurrentFile = (): FileProps | undefined => {
     const document = this.getActiveDocument();
 
     if (document) {
@@ -47,7 +47,7 @@ export abstract class CurrentFileHandler {
     return undefined;
   };
 
-  protected getWorkspacePath = () => {
+  public getWorkspacePath = () => {
     const fileUri = this.activeDocument?.uri;
     const workspaceFolders = vscode.workspace.workspaceFolders || [];
 

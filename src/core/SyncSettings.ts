@@ -4,6 +4,9 @@ import { Constants } from './Constants';
 import { Settings } from './settings';
 import { Context } from './shared/Context';
 
+let flagSyncStated = false;
+const syncListenners: (() => void)[] = [];
+
 export class SyncSettings {
   static startSync = async () => {
     if (Context.isFirstActivation()) {
@@ -16,10 +19,22 @@ export class SyncSettings {
         event.affectsConfiguration(listenner),
       );
 
-      if (isSyncRequired) {
-        await this.syncIncludePaths();
+      if (!isSyncRequired || Context.isFirstActivation()) {
+        return;
       }
+
+      await this.syncIncludePaths();
     });
+  };
+
+  static onSync = (cb: () => void) => {
+    syncListenners.push(cb);
+  };
+
+  private static afterSync = () => {
+    for (const syncListenner of syncListenners) {
+      syncListenner();
+    }
   };
 
   private static onFirstActivation = async () => {
@@ -31,10 +46,36 @@ export class SyncSettings {
   };
 
   private static syncIncludePaths = async () => {
-    const extIncludePaths = Settings.ext.getIncludePaths();
-    const includePaths = [...new Set([...extIncludePaths])];
+    if (flagSyncStated) {
+      return;
+    }
 
-    await Settings.ext.setIncludePaths(includePaths);
-    await Settings.msCppExt.setIncludePaths(includePaths);
+    const currentProfile = Settings.ext.getProfile();
+
+    if (!currentProfile || currentProfile === 'C/PIC') {
+      return;
+    }
+
+    flagSyncStated = true;
+
+    const profilePathsMap = {
+      'C/8051': {
+        getPaths: Settings.ext.getSdccIncludePaths,
+        setPaths: Settings.ext.setSdccPaths,
+      },
+      'C/PC': {
+        getPaths: Settings.ext.getTccIncludePaths,
+        setPaths: Settings.ext.setTccPaths,
+      },
+    };
+
+    const pathsHandler = profilePathsMap[currentProfile];
+    const paths = pathsHandler.getPaths();
+    const filteredPaths = [...new Set([...paths])];
+    await pathsHandler.setPaths(filteredPaths);
+    await Settings.ext.setProfile(currentProfile);
+    await Settings.msCppExt.setIncludePaths(filteredPaths);
+    this.afterSync();
+    flagSyncStated = false;
   };
 }

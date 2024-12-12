@@ -11,6 +11,7 @@ const defaultKeybindings: Record<string, string> = {
   'cimol-micro-intellisense.compiler.8051': 'ctrl+alt+f5',
   'cimol-micro-intellisense.compiler.pc': 'ctrl+alt+f6',
   'cimol-micro-intellisense.compiler.runPc': 'ctrl+alt+f7',
+  'cimol-micro-intellisense.compiler.changeProfile': 'ctrl+alt+c',
 };
 
 export class Keybindings {

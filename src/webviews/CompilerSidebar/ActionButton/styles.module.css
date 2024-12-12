@@ -1,40 +1,4 @@
-.compilerSidebarActionButton {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.625rem;
-  background: var(--vscode-settings-rowHoverBackground);
-  border: 0.063rem solid transparent;
-  white-space: nowrap;
-  min-width: 10rem;
-}
-
-.compilerSidebarActionButton .infoIconContainer {
-  width: 1.25rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.compilerSidebarActionButton:hover {
-  background: var(--vscode-settings-focusedRowBackground);
-  border: 0.063rem solid var(--vscode-settings-focusedRowBorder);
-}
-
-.compilerSidebarActionButton .description {
-  display: flex;
-  align-items: center;
-  gap: 0 0.25rem;
-}
-
-.compilerSidebarActionButton .descriptionText {
-  font-size: 0.75rem;
-  user-select: none;
-  color: var(--vscode-icon-foreground);
-}
-
-.compilerSidebarActionButton .button {
+.actionButton {
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -43,38 +7,64 @@
   background: transparent;
 }
 
-.compilerSidebarActionButton .button:hover {
+.actionButton:hover {
   position: relative;
   border-radius: 0.5rem;
   filter: brightness(0.75);
   background: var(--vscode-settings-focusedRowBackground);
 }
 
-.compilerSidebarActionButton .button:hover .buttonTip {
+.actionButton.actionButton--disabled {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.actionButton:hover .actionButtonTip {
   display: flex;
 }
 
-.compilerSidebarActionButton .buttonTip {
+.actionButton .actionButtonTip {
   position: absolute;
   display: none;
-  left: 50%;
-  transform: translateX(-50%);
-  top: -1.5rem;
-  background: var(--vscode-settings-focusedRowBorder);
+  background: var(--vscode-badge-background);
   border-radius: 0.25rem;
   font-size: 0.65rem;
   padding: 0.125rem 0.25rem;
-  color: var(--vscode-icon-foreground);
+  color: var(--vscode-badge-foreground);
 }
 
-.compilerSidebarActionButton .buttonTip::after {
+.actionButton .actionButtonTip::after {
   content: ' ';
   position: absolute;
+  border-width: 5px;
+  border-style: solid;
+}
+
+.actionButton .actionButtonTip--top {
+  left: 50%;
+  transform: translateX(-50%);
+  top: -100%;
+}
+
+.actionButton .actionButtonTip--top::after {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border-width: 5px;
-  border-style: solid;
-  border-color: var(--vscode-settings-focusedRowBorder) transparent transparent
+  border-color: var(--vscode-badge-background) transparent transparent
+    transparent;
+}
+
+.actionButton .actionButtonTip--bottom {
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(100% + 0.5rem);
+}
+
+.actionButton .actionButtonTip--bottom::after {
+  top: calc(-0.58rem);
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: transparent transparent var(--vscode-badge-background)
     transparent;
 }

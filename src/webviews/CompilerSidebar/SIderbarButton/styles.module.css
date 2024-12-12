@@ -1,0 +1,35 @@
+.sidebarButton {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.625rem;
+  background: var(--vscode-settings-rowHoverBackground);
+  border: 0.063rem solid transparent;
+  white-space: nowrap;
+  min-width: 10rem;
+}
+
+.sidebarButton:hover {
+  background: var(--vscode-settings-focusedRowBackground);
+  border: 0.063rem solid var(--vscode-settings-focusedRowBorder);
+}
+
+.sidebarButton .description {
+  display: flex;
+  align-items: center;
+  gap: 0 0.25rem;
+}
+
+.sidebarButton .infoIconContainer {
+  width: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebarButton .descriptionText {
+  font-size: 0.75rem;
+  user-select: none;
+  color: var(--vscode-icon-foreground);
+}
