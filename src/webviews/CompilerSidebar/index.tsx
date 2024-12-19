@@ -10,22 +10,17 @@ import { Switch } from '@webviews/icons/Switch';
 import { SidebarButton } from './SIderbarButton';
 import { ActionButton } from './ActionButton';
 import { CompilerProfile } from '@core/types/CompilerProfile';
-/* import { ChipSolid } from '@webviews/icons/ChipSolid'; */
+import { ChipSolid } from '@webviews/icons/ChipSolid';
+import { Constants } from '@core/Constants';
 
 const { vscodeWebviewApi } = window.process;
 
-const compile8051Command = 'cimol-micro-intellisense.compiler.8051';
-const compilePcCommand = 'cimol-micro-intellisense.compiler.pc';
-const runPcCommand = 'cimol-micro-intellisense.compiler.runPc';
-/*  const compilePicCommand = 'cimol-micro-intellisense.compiler.pic'  */
-const changeProfileCommand = 'cimol-micro-intellisense.compiler.changeProfile';
 const playIcon = <Play size={16} color="var(--vscode-testing-runAction)" />;
-const switchIcon = (
-  <Switch size={16} color="var(--vscode-settings-focusedRowBorder)" />
-);
-
 const hammerIcon = (
   <Hammer size={16} color="var(--vscode-editorError-foreground)" />
+);
+const switchIcon = (
+  <Switch size={16} color="var(--vscode-settings-focusedRowBorder)" />
 );
 
 const dispathMessage = async (command: string) => {
@@ -64,8 +59,8 @@ export const CompilerSidebar = () => {
           <button className={styles.profileChangeButton}>
             <ActionButton
               tipPos="bottom"
-              tip={keyBindings[changeProfileCommand]}
-              onClick={() => dispathMessage(changeProfileCommand)}
+              tip={keyBindings[Constants.COMMANDS.CHANGE_PROFILE]}
+              onClick={() => dispathMessage(Constants.COMMANDS.CHANGE_PROFILE)}
               icon={switchIcon}
             />
           </button>
@@ -78,47 +73,49 @@ export const CompilerSidebar = () => {
         <h4 className={styles.sectionTitle}>C/8051</h4>
         <ul className={styles.sectionActionsList}>
           <SidebarButton
-            isActionDisabled={currentProfile !== 'C/8051'}
+            isActionDisabled={currentProfile !== Constants.PROFILES.C_8051}
             label="Compile - 8051"
-            tip={keyBindings[compile8051Command]}
-            onActionClick={() => dispathMessage(compile8051Command)}
+            tip={keyBindings[Constants.COMMANDS.COMPILE_8051]}
+            onActionClick={() =>
+              dispathMessage(Constants.COMMANDS.COMPILE_8051)
+            }
             infoIcon={<Chip size={17} />}
             actionIcon={hammerIcon}
           />
         </ul>
       </div>
 
-      {/*  <div className={styles.section}>
+      <div className={styles.section}>
         <h4 className={styles.sectionTitle}>C/PIC</h4>
         <ul className={styles.sectionActionsList}>
           <SidebarButton
-            isActionDisabled={currentProfile !== 'C/PIC'}
+            isActionDisabled={currentProfile !== Constants.PROFILES.C_PIC}
             label="Compile - PIC"
-            tip={keyBindings['cimol-micro-intellisense.compiler.pic']}
-            onActionClick={() => dispathMessage('compilePic')}
+            tip={keyBindings[Constants.COMMANDS.COMPILE_PIC]}
+            onActionClick={() => dispathMessage(Constants.COMMANDS.COMPILE_PIC)}
             infoIcon={<ChipSolid size={18} />}
             actionIcon={hammerIcon}
           />
         </ul>
-      </div> */}
+      </div>
 
       <div className={styles.section}>
         <h4 className={styles.sectionTitle}>C</h4>
         <ul className={styles.sectionActionsList}>
           <SidebarButton
-            isActionDisabled={currentProfile !== 'C/PC'}
+            isActionDisabled={currentProfile !== Constants.PROFILES.C_PC}
             label="Compile - PC"
-            tip={keyBindings[compilePcCommand]}
-            onActionClick={() => dispathMessage(compilePcCommand)}
+            tip={keyBindings[Constants.COMMANDS.COMPILE_PC]}
+            onActionClick={() => dispathMessage(Constants.COMMANDS.COMPILE_PC)}
             infoIcon={<Monitor size={16} />}
             actionIcon={hammerIcon}
           />
 
           <SidebarButton
-            isActionDisabled={currentProfile !== 'C/PC'}
+            isActionDisabled={currentProfile !== Constants.PROFILES.C_PC}
             label="Run - PC"
-            tip={keyBindings[runPcCommand]}
-            onActionClick={() => dispathMessage(runPcCommand)}
+            tip={keyBindings[Constants.COMMANDS.RUN_PC]}
+            onActionClick={() => dispathMessage(Constants.COMMANDS.RUN_PC)}
             infoIcon={<MonitorPlay size={16.5} />}
             actionIcon={playIcon}
           />

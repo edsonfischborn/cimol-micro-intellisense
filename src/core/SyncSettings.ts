@@ -19,15 +19,13 @@ export class SyncSettings {
         event.affectsConfiguration(listenner),
       );
 
-      if (!isSyncRequired || Context.isFirstActivation()) {
-        return;
+      if (isSyncRequired) {
+        await this.syncSettings();
       }
-
-      await this.syncIncludePaths();
     });
   };
 
-  static onSync = (cb: () => void) => {
+  static addSyncListenner = (cb: () => void) => {
     syncListenners.push(cb);
   };
 
@@ -38,43 +36,41 @@ export class SyncSettings {
   };
 
   private static onFirstActivation = async () => {
-    await Settings.msCppExt.resetToDefaults();
+    await Settings.msCpp.resetToDefaults();
     await Settings.c.resetToDefaults();
     await Settings.ext.resetToDefaults();
     await Settings.editor.resetToDefaults();
-    await this.syncIncludePaths();
+    await this.syncSettings();
   };
 
-  private static syncIncludePaths = async () => {
-    if (flagSyncStated) {
-      return;
-    }
-
+  private static syncSettings = async () => {
     const currentProfile = Settings.ext.getProfile();
 
-    if (!currentProfile || currentProfile === 'C/PIC') {
+    if (flagSyncStated || !currentProfile) {
       return;
     }
 
     flagSyncStated = true;
-
     const profilePathsMap = {
-      'C/8051': {
+      [Constants.PROFILES.C_8051]: {
         getPaths: Settings.ext.getSdccIncludePaths,
         setPaths: Settings.ext.setSdccPaths,
       },
-      'C/PC': {
+      [Constants.PROFILES.C_PC]: {
         getPaths: Settings.ext.getTccIncludePaths,
         setPaths: Settings.ext.setTccPaths,
       },
+      [Constants.PROFILES.C_PIC]: {
+        getPaths: Settings.ext.getCcsIncludePaths,
+        setPaths: Settings.ext.setCcsPaths,
+      },
     };
-
     const pathsHandler = profilePathsMap[currentProfile];
     const paths = pathsHandler.getPaths();
     const filteredPaths = [...new Set([...paths])];
     await pathsHandler.setPaths(filteredPaths);
     await Settings.ext.setProfile(currentProfile);
-    await Settings.msCppExt.setIncludePaths(filteredPaths);
+    await Settings.msCpp.setIncludePaths(filteredPaths);
     this.afterSync();
     flagSyncStated = false;
   };

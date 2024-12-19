@@ -1,4 +1,5 @@
 import { AbstractCommandListenner } from '@core/abstract/AbstractCommandListenner';
+import { Constants } from '@core/Constants';
 import { Settings } from '@core/settings';
 import { Alert } from '@core/shared/Alert';
 import { FileTypeListener } from '@core/shared/FileTypeListener';
@@ -14,7 +15,7 @@ class CompilePc extends AbstractCommandListenner<null> {
   private fileListener: FileTypeListener;
 
   constructor() {
-    super('cimol-micro-intellisense.compiler.pc');
+    super(Constants.COMMANDS.COMPILE_PC);
     this.fileListener = new FileTypeListener('c');
   }
 
@@ -25,34 +26,34 @@ class CompilePc extends AbstractCommandListenner<null> {
       const msg = 'This file is not of type .c';
       Logger.log(msg);
       Alert.error(msg);
-
       return;
     }
 
-    Workspace.runWithProgress('compiling...', async () => {
-      if (Settings.ext.getAllowSaveBeforeCompile()) {
-        await Workspace.saveAll();
-      }
-      await this.compileWithTcc(currentFile);
-      Workspace.showDocument(
-        this.fileListener.getActiveDocument() as vscode.TextDocument,
-      );
-    });
+    Workspace.runWithProgress('compiling...', () => this.compile(currentFile));
   };
 
-  private readonly compileWithTcc = async (workingFile: FileProps) => {
+  private compile = async (workingFile: FileProps) => {
+    if (Settings.ext.getAllowSaveBeforeCompile()) {
+      await Workspace.saveAll();
+    }
+
+    await this.runTcc(workingFile);
+    const document = this.fileListener.getActiveDocument();
+    Workspace.showDocument(document as vscode.TextDocument);
+  };
+
+  private readonly runTcc = async (workingFile: FileProps) => {
     try {
       const time = new Date().toLocaleTimeString();
       const compileCommand = this.getCompileCommand(workingFile);
       const compiledFileName = this.getCompiledFileName(workingFile);
-
-      await this.deleteCompiledFile(workingFile);
 
       Logger.clear();
       Logger.focus();
       Logger.log(`Compiling ${workingFile.name}... ${time}`);
       Logger.log(compileCommand);
 
+      await this.deleteCompiledFile(workingFile);
       execSync(compileCommand, {
         stdio: 'pipe',
         encoding: 'utf-8',
@@ -77,12 +78,12 @@ class CompilePc extends AbstractCommandListenner<null> {
     const includePaths = Settings.ext.getTccIncludePaths();
     const compiledFilePath = this.getCompiledFilePath(workingFile);
 
-    let includeArgs = '';
+    const args = [];
     for (const path of includePaths) {
-      includeArgs += ` -I ${path}`;
+      args.push(` -I ${path}`);
     }
 
-    return `${compilerPath}${includeArgs} -o ${compiledFilePath} ${workingFile.path}`;
+    return `${compilerPath} ${args.join(' ')} -o ${compiledFilePath} ${workingFile.path}`;
   };
 
   private readonly getCompiledFilePath = (workingFile: FileProps) => {

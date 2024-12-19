@@ -8,7 +8,6 @@ class OpenSettings implements CommandListenner<null> {
 
   readonly exec = () => {
     const url = `@ext:${Constants.EXT_AUTHOR}.${Constants.EXT_NAME}`;
-
     vscode.commands.executeCommand('workbench.action.openSettings', url);
   };
 }

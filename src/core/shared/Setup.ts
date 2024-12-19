@@ -1,6 +1,7 @@
 import { changeCompilerProfile } from '@commands/changeCompilerProfile';
 import { compile8051 } from '@commands/compile8051';
 import { compilePc } from '@commands/compilePc';
+import { compilePic } from '@commands/compilePic';
 import { execPc } from '@commands/execPc';
 import { openKeybindings } from '@commands/openKeybindings';
 import { openLink } from '@commands/openLink';
@@ -22,10 +23,10 @@ export class Setup {
   static onActivate = async (context: vscode.ExtensionContext) => {
     Logger.log(`Starting ${Constants.EXT_NAME}...`);
 
+    SyncSettings.addSyncListenner(this.syncSettingsWithWebview);
     Context.setContext(context);
     this.registerCommands();
     this.createViews();
-    SyncSettings.onSync(this.syncSettingsWithWebview);
     await SyncSettings.startSync();
     await Context.afterActivation();
 
@@ -68,6 +69,7 @@ export class Setup {
     this.compilerView.setWebViewListenners(
       compile8051,
       compilePc,
+      compilePic,
       execPc,
       changeCompilerProfile,
     );

@@ -10,9 +10,13 @@ export class ExtensionSettings extends SettingsHandler {
   private defaultTccPaths = ['C:/8051/tcc/include'];
   private defaultSaveBfCompile = true;
   private defaultProfile: CompilerProfile = 'C/8051';
+  private defaultCcsExe = 'C:/8051/PCW/CCSCON.exe';
+  private defaultCcsPaths = ['C:/8051/PCW/Devices', 'C:/8051/PCW/Drivers'];
 
   private sdccPathsKey = 'compiler.sdccIncludePaths';
   private tccPathsKey = 'compiler.tccIncludePaths';
+  private ccsPathsKey = 'compiler.ccsIncludePaths';
+  private ccsExeKey = 'compiler.ccsExe';
   private sdccExeKey = 'compiler.sdccExe';
   private tccExeKey = 'compiler.tccExe';
   private saveBfCompileKey = 'compiler.saveBeforeCompile';
@@ -29,36 +33,23 @@ export class ExtensionSettings extends SettingsHandler {
     await this.updateConfig(this.sdccPathsKey, this.defaultSdccPaths);
     await this.updateConfig(this.tccPathsKey, this.defaultTccPaths);
     await this.updateConfig(this.profileKey, this.defaultProfile);
+    await this.updateConfig(this.ccsExeKey, this.defaultCcsExe);
+    await this.updateConfig(this.ccsPathsKey, this.defaultCcsPaths);
   };
 
-  private readonly replaceWorkspaceFolder = (
-    paths: string[],
-    workspaceDir?: string,
-  ) => {
-    const workspaceRgxp = /\$\{workspaceFolder\}/g;
-    const workspaceFolder = workspaceDir ?? '${workspaceFolder}';
-
-    return paths.map((path) =>
-      path?.replace(workspaceRgxp, workspaceFolder)?.replace(/\\/g, '/'),
-    );
-  };
-
-  readonly getSdccIncludePaths = (workspaceDir?: string) => {
-    const sdccPaths = this.inspectConfig<string[]>(
+  readonly getSdccIncludePaths = () => {
+    return this.inspectConfig<string[]>(
       this.sdccPathsKey,
       this.defaultSdccPaths,
     );
-
-    return this.replaceWorkspaceFolder(sdccPaths, workspaceDir);
   };
 
-  readonly getTccIncludePaths = (workspaceDir?: string) => {
-    const tccPaths = this.inspectConfig<string[]>(
-      this.tccPathsKey,
-      this.defaultTccPaths,
-    );
+  readonly getTccIncludePaths = () => {
+    return this.inspectConfig<string[]>(this.tccPathsKey, this.defaultTccPaths);
+  };
 
-    return this.replaceWorkspaceFolder(tccPaths, workspaceDir);
+  readonly getCcsIncludePaths = () => {
+    return this.inspectConfig<string[]>(this.ccsPathsKey, this.defaultCcsPaths);
   };
 
   readonly setSdccPaths = (paths: string[]) => {
@@ -69,12 +60,20 @@ export class ExtensionSettings extends SettingsHandler {
     return this.updateConfig(this.tccPathsKey, paths);
   };
 
+  readonly setCcsPaths = (paths: string[]) => {
+    return this.updateConfig(this.ccsPathsKey, paths);
+  };
+
   readonly getSdccExePath = () => {
     return this.inspectConfig<string>(this.sdccExeKey, this.defaultSdccExe);
   };
 
   readonly getTccExePath = () => {
     return this.inspectConfig<string>(this.tccExeKey, this.defaultTccExe);
+  };
+
+  readonly getCcsPath = () => {
+    return this.inspectConfig<string>(this.ccsExeKey, this.defaultCcsExe);
   };
 
   readonly getAllowSaveBeforeCompile = () => {

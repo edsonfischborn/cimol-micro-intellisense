@@ -1,4 +1,5 @@
 import { AbstractCommandListenner } from '@core/abstract/AbstractCommandListenner';
+import { Constants } from '@core/Constants';
 import { Alert } from '@core/shared/Alert';
 import { FileTypeListener } from '@core/shared/FileTypeListener';
 import { Logger } from '@core/shared/Logger';
@@ -13,7 +14,7 @@ class ExecPc extends AbstractCommandListenner<null> {
   private fileListener: FileTypeListener;
 
   constructor() {
-    super('cimol-micro-intellisense.compiler.runPc');
+    super(Constants.COMMANDS.RUN_PC);
     this.fileListener = new FileTypeListener('c');
   }
 
@@ -24,7 +25,6 @@ class ExecPc extends AbstractCommandListenner<null> {
       const msg = 'This file is not of type .c';
       Logger.log(msg);
       Alert.error(msg);
-
       return;
     }
 

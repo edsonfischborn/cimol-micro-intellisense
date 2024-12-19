@@ -40,10 +40,9 @@ export class GlobalWebViewProvider implements vscode.WebviewViewProvider {
       viewId: this.viewId,
     };
 
-    Logger.log(`\nsending to webview ${payload.command}...\n`);
-
+    Logger.log(`\nsending to webview ${payload.command}...`);
     if (!this._view || !this._view?.visible) {
-      Logger.log(`\nWARN webview ${this.viewId} not visible\n`);
+      Logger.log(`\nWARN webview ${this.viewId} not visible`);
     }
 
     this._view?.webview.postMessage(payloadWithMeta);
@@ -66,7 +65,7 @@ export class GlobalWebViewProvider implements vscode.WebviewViewProvider {
       }
     }
 
-    Logger.log(`\ncommand ${payload?.command} not found\n`);
+    Logger.log(`\ncommand ${payload?.command} not found`);
   };
 
   public readonly register = () => {

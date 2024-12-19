@@ -1,18 +1,19 @@
 import { AbstractCommandListenner } from '@core/abstract/AbstractCommandListenner';
+import { Constants } from '@core/Constants';
 import { Settings } from '@core/settings';
 import * as vscode from 'vscode';
 
-class CompilerProfileChanger extends AbstractCommandListenner<null> {
+class ChangeCompilerProfile extends AbstractCommandListenner<null> {
   private readonly label: string = 'Select current compiler profile';
 
   constructor() {
-    super('cimol-micro-intellisense.compiler.changeProfile');
+    super(Constants.COMMANDS.CHANGE_PROFILE);
   }
 
   private readonly profiles: vscode.QuickPickItem[] = [
-    { label: 'C/8051' },
-    //{ label: 'C/PIC' },
-    { label: 'C/PC' },
+    { label: Constants.PROFILES.C_8051 },
+    { label: Constants.PROFILES.C_PIC },
+    { label: Constants.PROFILES.C_PC },
   ];
 
   private onSelectProfile = (
@@ -46,4 +47,4 @@ class CompilerProfileChanger extends AbstractCommandListenner<null> {
   };
 }
 
-export const changeCompilerProfile = new CompilerProfileChanger();
+export const changeCompilerProfile = new ChangeCompilerProfile();

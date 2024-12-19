@@ -1,7 +1,7 @@
 import { SettingsHandler } from '../abstract/SettingsHandler';
 import { Constants } from '../Constants';
 
-export class MsCppExtSettings extends SettingsHandler {
+export class MsCppSettings extends SettingsHandler {
   private pathsKey = 'default.includePath';
 
   private defaultPaths: string[] = [];
@@ -28,6 +28,7 @@ export class MsCppExtSettings extends SettingsHandler {
   };
 
   public setIncludePaths = (paths: string[]) => {
-    return this.updateConfig(this.pathsKey, paths);
+    const uniquePaths = [...new Set([...paths, '${workspaceFolder}'])];
+    return this.updateConfig(this.pathsKey, uniquePaths);
   };
 }

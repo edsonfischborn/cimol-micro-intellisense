@@ -11,11 +11,11 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import * as vscode from 'vscode';
 
-class Compile8051 extends AbstractCommandListenner<null> {
+class CompilePic extends AbstractCommandListenner<null> {
   private fileListener: FileTypeListener;
 
   constructor() {
-    super(Constants.COMMANDS.COMPILE_8051);
+    super(Constants.COMMANDS.COMPILE_PIC);
     this.fileListener = new FileTypeListener('c');
   }
 
@@ -37,20 +37,17 @@ class Compile8051 extends AbstractCommandListenner<null> {
       await Workspace.saveAll();
     }
 
-    await this.runSdcc(workingFile);
+    await this.runCcs(workingFile);
     const document = this.fileListener.getActiveDocument();
     Workspace.showDocument(document as vscode.TextDocument);
   };
 
-  private readonly runSdcc = async (workingFile: FileProps) => {
+  private readonly runCcs = async (workingFile: FileProps) => {
     try {
       const { dir, nameWithoutExt } = workingFile;
       const time = new Date().toLocaleTimeString();
-      const outputFileName = this.getFileName(nameWithoutExt, 'hex');
-      const memoryFileName = this.getFileName(nameWithoutExt, 'mem');
-      const outputFilePath = resolve(dir, outputFileName);
       const compileCommand = this.getCompileCommand(workingFile);
-      const filesMsg = `Generated files: ${outputFileName} - ISIS / 8051 | ${memoryFileName} - memory layout`;
+      const filesMsg = `Generated files: ${dir}\\${nameWithoutExt}.(bin|hex)`;
 
       Logger.clear();
       Logger.focus();
@@ -58,25 +55,27 @@ class Compile8051 extends AbstractCommandListenner<null> {
       Logger.log(compileCommand);
 
       await this.deleteCompiledFiles(workingFile);
-      const sdccMsg = execSync(compileCommand, {
+      const ccsMsg = execSync(compileCommand, {
         stdio: 'pipe',
         encoding: 'utf-8',
       });
 
-      if (!existsSync(outputFilePath)) {
-        throw new Error('Error: Compiled file not found');
+      if (!this.isCompiledFileExists(workingFile)) {
+        const msg = 'Error: File not found. Verify the ccs message, try again.';
+        throw new Error(msg);
       }
 
-      if (sdccMsg) {
+      if (ccsMsg && ccsMsg.includes('Warning#')) {
         Logger.log('\nCOMPILATION SUCCESSFUL WITH WARNINGS! ⚠️⚠️');
         Logger.log(filesMsg);
         Logger.log('Warning(s):');
-        Logger.log(sdccMsg);
+        Logger.log(ccsMsg);
         return;
       }
 
       Logger.log('\nCOMPILATION SUCCESSFUL! ✅️🚀');
       Logger.log(filesMsg);
+      Logger.log(ccsMsg ? `Info:\n${ccsMsg}` : '');
     } catch (ex: any) {
       const msg = ex?.stdout || ex?.message || 'Unknown Error';
       Logger.log('\nCOMPILE ERROR! 🔴🐛');
@@ -90,52 +89,56 @@ class Compile8051 extends AbstractCommandListenner<null> {
   };
 
   private readonly getCompileCommand = (workingFile: FileProps) => {
-    const { path, dir, nameWithoutExt } = workingFile;
-    const compilerPath = Settings.ext.getSdccExePath();
-    const includePaths = Settings.ext.getSdccIncludePaths();
-    const compiledFileName = this.getFileName(nameWithoutExt, 'hex');
-    const compiledFilePath = resolve(dir, compiledFileName);
+    const { path } = workingFile;
+    const compilerPath = Settings.ext.getCcsPath();
+    const includePaths = Settings.ext.getCcsIncludePaths();
 
-    const args = [
-      '-mmcs51',
-      '--std-sdcc11',
-      '--vc',
-      '--use-stdout',
-      '--model-small',
-      '--out-fmt-ihx',
-    ];
+    // ext args
+    const extArgs = ['+EA'];
+    const args = [...extArgs, '+STDOUT', '+PE'];
+    args.push(`I="${includePaths?.join(';')}"`);
 
-    for (const includePath of includePaths) {
-      args.push(`-I${includePath}`);
-    }
-
-    return `${compilerPath} ${args?.join(' ')} ${path} -o ${compiledFilePath}`;
+    return `${compilerPath} ${args?.join(' ')} ${path}`;
   };
 
-  private readonly getFileName = (name: string, ext: string) => {
-    return `${name}_HEX.${ext}`;
+  private readonly getFileName = (nameWithoutExt: string, ext: string) => {
+    return `${nameWithoutExt}.${ext}`;
+  };
+
+  private readonly isCompiledFileExists = (workingFile: FileProps) => {
+    const { dir, nameWithoutExt } = workingFile;
+    return (
+      existsSync(resolve(dir, this.getFileName(nameWithoutExt, 'bin'))) ||
+      existsSync(resolve(dir, this.getFileName(nameWithoutExt, 'hex')))
+    );
   };
 
   private readonly deleteCompiledFiles = async (workingFile: FileProps) => {
     const { dir, nameWithoutExt } = workingFile;
     await Workspace.deleteFiles([
+      resolve(dir, this.getFileName(nameWithoutExt, 'bin')),
       resolve(dir, this.getFileName(nameWithoutExt, 'hex')),
-      resolve(dir, this.getFileName(nameWithoutExt, 'mem')),
     ]);
   };
 
   private readonly deleteBuildFiles = async (workingFile: FileProps) => {
     const { dir, nameWithoutExt } = workingFile;
     const buildExts = [
-      'sym',
-      'ihx',
-      'rst',
-      'rel',
-      'map',
-      'asm',
       'lst',
-      'lnk',
-      'lk',
+      'map',
+      'tre',
+      'sta',
+      'err',
+      'sym',
+      'pjt',
+      'cod',
+      'coff',
+      'dwarf',
+      'tmp',
+      'o',
+      'ccspjt',
+      'esym',
+      'xsym',
     ];
 
     const paths = buildExts.map((ext) =>
@@ -145,4 +148,4 @@ class Compile8051 extends AbstractCommandListenner<null> {
   };
 }
 
-export const compile8051 = new Compile8051();
+export const compilePic = new CompilePic();

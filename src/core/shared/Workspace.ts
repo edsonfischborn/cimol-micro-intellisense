@@ -23,6 +23,10 @@ export class Workspace {
     }
   };
 
+  static getTextDocuments = () => {
+    return vscode.workspace.textDocuments;
+  };
+
   static showDocument = (document: vscode.TextDocument) => {
     vscode.window.showTextDocument(document, { preview: false });
   };
