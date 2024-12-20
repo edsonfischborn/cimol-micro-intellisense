@@ -1,56 +1,59 @@
-import { CurrentFileHandler } from '@core/abstract/CurrentFileHandler';
+import { AbstractCommandListenner } from '@core/abstract/AbstractCommandListenner';
+import { Constants } from '@core/Constants';
 import { Settings } from '@core/settings';
 import { Alert } from '@core/shared/Alert';
+import { FileTypeListener } from '@core/shared/FileTypeListener';
 import { Logger } from '@core/shared/Logger';
 import { Workspace } from '@core/shared/Workspace';
-import { CommandListenner } from '@core/types/CommandListenner';
 import { FileProps } from '@core/types/FileProps';
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import * as vscode from 'vscode';
 
-class CompilePc extends CurrentFileHandler implements CommandListenner<null> {
-  readonly command: string = 'compilePc';
+class CompilePc extends AbstractCommandListenner<null> {
+  private fileListener: FileTypeListener;
 
   constructor() {
-    super('c');
+    super(Constants.COMMANDS.COMPILE_PC);
+    this.fileListener = new FileTypeListener('c');
   }
 
-  readonly exec = () => {
-    const currentFile = this.getCurrentFile();
+  readonly exec = async () => {
+    const currentFile = this.fileListener.getCurrentFile();
 
     if (!currentFile) {
       const msg = 'This file is not of type .c';
       Logger.log(msg);
       Alert.error(msg);
-
       return;
     }
 
-    Workspace.runWithProgress('compiling...', async () => {
-      if (Settings.ext.getAllowSaveBeforeCompile()) {
-        await Workspace.saveAll();
-      }
-      await this.compileWithTcc(currentFile);
-      Workspace.showDocument(this.getActiveDocument() as vscode.TextDocument);
-    });
+    Workspace.runWithProgress('compiling...', () => this.compile(currentFile));
   };
 
-  private readonly compileWithTcc = async (workingFile: FileProps) => {
+  private compile = async (workingFile: FileProps) => {
+    if (Settings.ext.getAllowSaveBeforeCompile()) {
+      await Workspace.saveAll();
+    }
+
+    await this.runTcc(workingFile);
+    const document = this.fileListener.getActiveDocument();
+    Workspace.showDocument(document as vscode.TextDocument);
+  };
+
+  private readonly runTcc = async (workingFile: FileProps) => {
     try {
       const time = new Date().toLocaleTimeString();
       const compileCommand = this.getCompileCommand(workingFile);
       const compiledFileName = this.getCompiledFileName(workingFile);
-      const successMsg = `\nCOMPILATION SUCCESSFUL! Generated file: ${compiledFileName}`;
-
-      await this.deleteCompiledFile(workingFile);
 
       Logger.clear();
       Logger.focus();
       Logger.log(`Compiling ${workingFile.name}... ${time}`);
       Logger.log(compileCommand);
 
+      await this.deleteCompiledFile(workingFile);
       execSync(compileCommand, {
         stdio: 'pipe',
         encoding: 'utf-8',
@@ -60,28 +63,28 @@ class CompilePc extends CurrentFileHandler implements CommandListenner<null> {
         throw new Error('Error: Compiled file not found');
       }
 
-      Logger.log(successMsg);
+      Logger.log('\nCOMPILATION SUCCESSFUL! ✅️🚀');
+      Logger.log(`Generated file: ${compiledFileName}`);
     } catch (ex: any) {
       const msg = ex?.stdout || ex?.message || 'Unknown Error';
-      Logger.log('\nCOMPILE ERROR. VERIFY THE COMPILER MESSAGE BELOW: ');
+      Logger.log('\nCOMPILE ERROR! 🔴🐛');
+      Logger.log('Error(s): ');
       Logger.log(msg);
     }
   };
 
   private readonly getCompileCommand = (workingFile: FileProps) => {
     const compilerPath = Settings.ext.getTccExePath();
-    const allowIncludePaths = Settings.ext.getAllowIncludePathsOnCompile();
-    const includePaths = Settings.ext.getIncludePaths(this.getWorkspacePath());
+    const includePaths = Settings.ext.getTccIncludePaths();
+    const configArgs = Settings.ext.getTccFlags();
     const compiledFilePath = this.getCompiledFilePath(workingFile);
+    const args = [...new Set([...configArgs])];
 
-    let includeArgs = '';
-    if (allowIncludePaths) {
-      for (const path of includePaths) {
-        includeArgs += ` -I ${path}`;
-      }
+    for (const path of includePaths) {
+      args.push(`-I${path}`);
     }
 
-    return `${compilerPath}${includeArgs} -o ${compiledFilePath} ${workingFile.path}`;
+    return `${compilerPath} ${args.join(' ')} -o ${compiledFilePath} ${workingFile.path}`;
   };
 
   private readonly getCompiledFilePath = (workingFile: FileProps) => {

@@ -1,5 +1,5 @@
+import { SidebarButton } from './SidebarButton';
 import { Constants } from '@core/Constants';
-import { ActionButton } from './ActionButton';
 import { Settings } from '../icons/Settings';
 import { Github } from '../icons/Github';
 import { Command } from '../icons/Command';
@@ -27,20 +27,20 @@ export const GeneralSidebar = () => {
   return (
     <nav className={styles.generalSidebar}>
       <ul className={styles.sectionActionsList}>
-        <ActionButton
-          onActionClick={onGitClick}
+        <SidebarButton
+          onClick={onGitClick}
           icon={<Github size={16} />}
           label="Github"
         />
 
-        <ActionButton
-          onActionClick={onSettingsClick}
+        <SidebarButton
+          onClick={onSettingsClick}
           icon={<Settings size={16} />}
           label="Settings"
         />
 
-        <ActionButton
-          onActionClick={onKeybindingsClick}
+        <SidebarButton
+          onClick={onKeybindingsClick}
           icon={<Command size={16} />}
           label="Keys"
         />

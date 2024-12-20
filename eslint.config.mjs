@@ -1,7 +1,7 @@
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
-import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default [
   {
@@ -13,13 +13,11 @@ export default [
       'simple-import-sort': simpleImportSort,
       prettier: eslintPluginPrettier,
     },
-
     languageOptions: {
       parser: tsParser,
       ecmaVersion: 2022,
       sourceType: 'module',
     },
-
     rules: {
       '@typescript-eslint/naming-convention': [
         'warn',
@@ -28,7 +26,6 @@ export default [
           format: ['camelCase', 'PascalCase'],
         },
       ],
-
       curly: 'warn',
       eqeqeq: 'warn',
       'no-throw-literal': 'warn',

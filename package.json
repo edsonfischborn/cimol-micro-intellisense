@@ -59,12 +59,20 @@
         "title": "Compiler(c/8051): compile for 8051"
       },
       {
+        "command": "cimol-micro-intellisense.compiler.pic",
+        "title": "Compiler(c): compile for PIC"
+      },
+      {
         "command": "cimol-micro-intellisense.compiler.pc",
         "title": "Compiler(c): compile for PC"
       },
       {
         "command": "cimol-micro-intellisense.compiler.runPc",
         "title": "Compiler(c): run exe PC"
+      },
+      {
+        "command": "cimol-micro-intellisense.compiler.changeProfile",
+        "title": "Change compiler profile"
       }
     ],
     "keybindings": [
@@ -79,6 +87,14 @@
       {
         "command": "cimol-micro-intellisense.compiler.runPc",
         "key": "ctrl+alt+f7"
+      },
+      {
+        "command": "cimol-micro-intellisense.compiler.pic",
+        "key": "ctrl+alt+p"
+      },
+      {
+        "command": "cimol-micro-intellisense.compiler.changeProfile",
+        "key": "ctrl+alt+c"
       }
     ],
     "menus": {},
@@ -86,34 +102,91 @@
       {
         "title": "cimol-micro-intellisense",
         "properties": {
-          "cimol-micro-intellisense.compiler.includePaths": {
-            "title": "Include Paths",
-            "type": "array",
-            "markdownDescription": "Use `${workspaceFolder}` for reference current workspace (root folder). Will be added automatic in the c/c++ extension. **DONT USE `*`**; Example values: `C:/8051/sdcc/include`, `${workspaceFolder}/lib`",
-            "items": {
-              "type": "string"
-            },
-            "order": 0
+          "cimol-micro-intellisense.compiler.profile": {
+            "order": 0,
+            "title": "Current compiler profile",
+            "markdownDescription": "Current profile for intellisense and library inclusion during compilation.",
+            "type": "string",
+            "default": "C/8051",
+            "enum": [
+              "C/8051",
+              "C/PIC",
+              "C/PC"
+            ]
           },
           "cimol-micro-intellisense.compiler.sdccExe": {
-            "markdownDescription": "SDCC compiler `.exe`, used for compile `.c` -> `8051(.hex)`. Example value `C:/8051/sdcc/bin/sdcc.exe`",
+            "markdownDescription": "SDCC compiler `sdcc.exe`, used for compile `.c` -> `8051(.hex)`. Example value: `C:/8051/sdcc/bin/sdcc.exe`",
             "type": "string",
             "order": 1
           },
-          "cimol-micro-intellisense.compiler.tccExe": {
-            "markdownDescription": "Tiny C compiler `.exe`, used for compile `.c` -> `PC(.exe)`. Example value `C:/8051/tcc/tcc.exe`",
-            "type": "string",
+          "cimol-micro-intellisense.compiler.sdccIncludePaths": {
+            "title": "Include paths for SDCC compiler (8051)",
+            "type": "array",
+            "markdownDescription": "Will be added automatic in the c/c++ extension. **DONT USE `*`**; Example value: `C:/8051/sdcc/include`",
+            "items": {
+              "type": "string"
+            },
             "order": 2
           },
-          "cimol-micro-intellisense.compiler.includePathsOnCompile": {
-            "markdownDescription": "If true, the `compiler.includePaths` array will be included in SDCC and Tiny C compiler commands",
-            "type": "boolean",
+          "cimol-micro-intellisense.compiler.sdccFlags": {
+            "title": "Flags for SDCC compiler (8051)",
+            "type": "array",
+            "markdownDescription": "Example: `--std-sdcc11` `--model-small`",
+            "items": {
+              "type": "string"
+            },
             "order": 3
+          },
+          "cimol-micro-intellisense.compiler.tccExe": {
+            "markdownDescription": "Tiny C compiler `tcc.exe`, used for compile `.c` -> `PC(.exe)`. Example value: `C:/8051/tcc/tcc.exe`",
+            "type": "string",
+            "order": 4
+          },
+          "cimol-micro-intellisense.compiler.tccIncludePaths": {
+            "title": "Include paths for Tiny C compiler (PC)",
+            "type": "array",
+            "markdownDescription": "Will be added automatic in the c/c++ extension. **DONT USE `*`**; Example value: `C:/8051/tcc/include`",
+            "items": {
+              "type": "string"
+            },
+            "order": 5
+          },
+          "cimol-micro-intellisense.compiler.tccFlags": {
+            "title": "Flags for Tiny C compiler (PC)",
+            "type": "array",
+            "markdownDescription": "Example: `-Wall` `-Werror`",
+            "items": {
+              "type": "string"
+            },
+            "order": 6
+          },
+          "cimol-micro-intellisense.compiler.ccsExe": {
+            "markdownDescription": "CCS compiler `CCSCON.exe`, used for compile `.c` -> `PIC(.hex)`. Example value: `C:/8051/PCW/CCSCON.exe`",
+            "type": "string",
+            "order": 7
+          },
+          "cimol-micro-intellisense.compiler.ccsIncludePaths": {
+            "title": "Include paths for CCS compiler (PIC)",
+            "type": "array",
+            "markdownDescription": "Will be added automatic in the c/c++ extension. **DONT USE `*`**; Example value: `C:/8051/PCW/Devices`",
+            "items": {
+              "type": "string"
+            },
+            "order": 8
+          },
+          "cimol-micro-intellisense.compiler.ccsFlags": {
+            "title": "Flags for CCS compiler (PIC)",
+            "type": "array",
+            "markdownDescription": "Example: `+EA` `-E`",
+            "items": {
+              "type": "string"
+            },
+            "order": 9
           },
           "cimol-micro-intellisense.compiler.saveBeforeCompile": {
             "markdownDescription": "If true, save all workspace files before compiler commands",
             "type": "boolean",
-            "order": 4
+            "order": 10
           }
         }
       }

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+import { Context } from './shared/Context';
 import { Logger } from './shared/Logger';
 import { CommandListenner } from './types/CommandListenner';
 
@@ -9,10 +10,7 @@ export class GlobalWebViewProvider implements vscode.WebviewViewProvider {
   private webViewListenners: CommandListenner<any>[];
   private readonly rootSegments = ['dist', 'webviews'];
 
-  constructor(
-    private readonly extContext: vscode.ExtensionContext,
-    private readonly viewId: string,
-  ) {
+  constructor(private readonly viewId: string) {
     this._onRender = () => {};
     this.webViewListenners = [];
   }
@@ -42,10 +40,9 @@ export class GlobalWebViewProvider implements vscode.WebviewViewProvider {
       viewId: this.viewId,
     };
 
-    Logger.log(`\nsending to webview ${payload.command}...\n`);
-
+    Logger.log(`\nsending to webview ${payload.command}...`);
     if (!this._view || !this._view?.visible) {
-      Logger.log(`\nWARN webview ${this.viewId} not visible\n`);
+      Logger.log(`\nWARN webview ${this.viewId} not visible`);
     }
 
     this._view?.webview.postMessage(payloadWithMeta);
@@ -68,7 +65,7 @@ export class GlobalWebViewProvider implements vscode.WebviewViewProvider {
       }
     }
 
-    Logger.log(`\ncommand ${payload?.command} not found\n`);
+    Logger.log(`\ncommand ${payload?.command} not found`);
   };
 
   public readonly register = () => {
@@ -76,7 +73,7 @@ export class GlobalWebViewProvider implements vscode.WebviewViewProvider {
   };
 
   private joinPath = (...segments: string[]) => {
-    return vscode.Uri.joinPath(this.extContext.extensionUri, ...segments);
+    return vscode.Uri.joinPath(Context.getExtUri(), ...segments);
   };
 
   private getAsWebViewUri = (

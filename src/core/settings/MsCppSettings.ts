@@ -1,14 +1,16 @@
 import { SettingsHandler } from '../abstract/SettingsHandler';
 import { Constants } from '../Constants';
 
-export class CppSettings extends SettingsHandler {
+export class MsCppSettings extends SettingsHandler {
   private pathsKey = 'default.includePath';
 
+  private defaultPaths: string[] = [];
+
   constructor() {
-    super(Constants.CPP_EXT_ALIAS);
+    super(Constants.MS_CPP_EXT_ALIAS);
   }
 
-  public setRequiredConfig = async () => {
+  public resetToDefaults = async () => {
     const configMap = {
       'default.defines': ['_DEBUG', 'UNICODE', '_UNICODE'],
       'default.intelliSenseMode': 'gcc-x64',
@@ -21,9 +23,12 @@ export class CppSettings extends SettingsHandler {
     for (const [key, value] of Object.entries(configMap)) {
       await this.updateConfig(key, value);
     }
+
+    await this.updateConfig(this.pathsKey, this.defaultPaths);
   };
 
   public setIncludePaths = (paths: string[]) => {
-    return this.updateConfig(this.pathsKey, paths);
+    const uniquePaths = [...new Set([...paths, '${workspaceFolder}'])];
+    return this.updateConfig(this.pathsKey, uniquePaths);
   };
 }

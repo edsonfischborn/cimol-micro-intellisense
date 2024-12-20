@@ -1,3 +1,4 @@
+import { Constants } from '@core/Constants';
 import { existsSync, readFileSync } from 'fs';
 import os from 'os';
 import path from 'path';
@@ -8,9 +9,11 @@ interface Keybinding {
 }
 
 const defaultKeybindings: Record<string, string> = {
-  'cimol-micro-intellisense.compiler.8051': 'ctrl+alt+f5',
-  'cimol-micro-intellisense.compiler.pc': 'ctrl+alt+f6',
-  'cimol-micro-intellisense.compiler.runPc': 'ctrl+alt+f7',
+  [Constants.COMMANDS.COMPILE_8051]: 'ctrl+alt+f5',
+  [Constants.COMMANDS.COMPILE_PIC]: 'ctrl+alt+p',
+  [Constants.COMMANDS.COMPILE_PC]: 'ctrl+alt+f6',
+  [Constants.COMMANDS.RUN_PC]: 'ctrl+alt+f7',
+  [Constants.COMMANDS.CHANGE_PROFILE]: 'ctrl+alt+c',
 };
 
 export class Keybindings {

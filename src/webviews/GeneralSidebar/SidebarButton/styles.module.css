@@ -1,4 +1,4 @@
-.generalSidebarActionButton .button {
+.sidebarButton .button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,14 +12,15 @@
   align-items: center;
   cursor: pointer;
   row-gap: 0.25rem;
+  user-select: none;
 }
 
-.generalSidebarActionButton .button:hover {
+.sidebarButton .button:hover {
   background: var(--vscode-settings-focusedRowBackground);
   border: 0.063rem solid var(--vscode-settings-focusedRowBorder);
 }
 
-.generalSidebarActionButton .buttonLabel {
+.sidebarButton .buttonLabel {
   color: var(--vscode-icon-foreground);
   font-weight: 500;
   font-size: 0.75rem;
