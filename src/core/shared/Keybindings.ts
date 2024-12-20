@@ -10,7 +10,7 @@ interface Keybinding {
 
 const defaultKeybindings: Record<string, string> = {
   [Constants.COMMANDS.COMPILE_8051]: 'ctrl+alt+f5',
-  [Constants.COMMANDS.COMPILE_PIC]: 'ctrl+alt+f8',
+  [Constants.COMMANDS.COMPILE_PIC]: 'ctrl+alt+p',
   [Constants.COMMANDS.COMPILE_PC]: 'ctrl+alt+f6',
   [Constants.COMMANDS.RUN_PC]: 'ctrl+alt+f7',
   [Constants.COMMANDS.CHANGE_PROFILE]: 'ctrl+alt+c',

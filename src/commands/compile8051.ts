@@ -93,17 +93,11 @@ class Compile8051 extends AbstractCommandListenner<null> {
     const { path, dir, nameWithoutExt } = workingFile;
     const compilerPath = Settings.ext.getSdccExePath();
     const includePaths = Settings.ext.getSdccIncludePaths();
+    const configArgs = Settings.ext.getSdccFlags();
     const compiledFileName = this.getFileName(nameWithoutExt, 'hex');
     const compiledFilePath = resolve(dir, compiledFileName);
-
-    const args = [
-      '-mmcs51',
-      '--std-sdcc11',
-      '--vc',
-      '--use-stdout',
-      '--model-small',
-      '--out-fmt-ihx',
-    ];
+    const requiredArgs = ['-mmcs51', '--vc', '--use-stdout', '--out-fmt-ihx'];
+    const args = [...new Set([...configArgs]), ...requiredArgs];
 
     for (const includePath of includePaths) {
       args.push(`-I${includePath}`);

@@ -4,21 +4,27 @@ import { SettingsHandler } from '../abstract/SettingsHandler';
 import { Constants } from '../Constants';
 
 export class ExtensionSettings extends SettingsHandler {
-  private defaultSdccExe = 'C:/8051/sdcc/bin/sdcc.exe';
-  private defaultTccExe = 'C:/8051/tcc/tcc.exe';
   private defaultSdccPaths = ['C:/8051/sdcc/include/mcs51'];
+  private defaultSdccExe = 'C:/8051/sdcc/bin/sdcc.exe';
+  private defaultSdccFlags = ['--std-sdcc11', '--model-small'];
   private defaultTccPaths = ['C:/8051/tcc/include'];
+  private defaultTccExe = 'C:/8051/tcc/tcc.exe';
+  private defaultTccFlags = ['-Wall'];
+  private defaultCcsPaths = ['C:/8051/PCW/Devices', 'C:/8051/PCW/Drivers'];
+  private defaultCcsExe = 'C:/8051/PCW/CCSCON.exe';
+  private defaultCcsFlags = ['+EA'];
   private defaultSaveBfCompile = true;
   private defaultProfile: CompilerProfile = 'C/8051';
-  private defaultCcsExe = 'C:/8051/PCW/CCSCON.exe';
-  private defaultCcsPaths = ['C:/8051/PCW/Devices', 'C:/8051/PCW/Drivers'];
 
   private sdccPathsKey = 'compiler.sdccIncludePaths';
+  private sdccExeKey = 'compiler.sdccExe';
+  private sdccFlagsKey = 'compiler.sdccFlags';
   private tccPathsKey = 'compiler.tccIncludePaths';
+  private tccExeKey = 'compiler.tccExe';
+  private tccFlagsKey = 'compiler.tccFlags';
   private ccsPathsKey = 'compiler.ccsIncludePaths';
   private ccsExeKey = 'compiler.ccsExe';
-  private sdccExeKey = 'compiler.sdccExe';
-  private tccExeKey = 'compiler.tccExe';
+  private ccsFlagsKey = 'compiler.ccsFlags';
   private saveBfCompileKey = 'compiler.saveBeforeCompile';
   private profileKey = 'compiler.profile';
 
@@ -35,6 +41,9 @@ export class ExtensionSettings extends SettingsHandler {
     await this.updateConfig(this.profileKey, this.defaultProfile);
     await this.updateConfig(this.ccsExeKey, this.defaultCcsExe);
     await this.updateConfig(this.ccsPathsKey, this.defaultCcsPaths);
+    await this.updateConfig(this.sdccFlagsKey, this.defaultSdccFlags);
+    await this.updateConfig(this.tccFlagsKey, this.defaultTccFlags);
+    await this.updateConfig(this.ccsFlagsKey, this.defaultCcsFlags);
   };
 
   readonly getSdccIncludePaths = () => {
@@ -78,6 +87,21 @@ export class ExtensionSettings extends SettingsHandler {
 
   readonly getAllowSaveBeforeCompile = () => {
     return this.inspectConfig<boolean>(this.saveBfCompileKey, false);
+  };
+
+  readonly getSdccFlags = () => {
+    return this.inspectConfig<string[]>(
+      this.sdccFlagsKey,
+      this.defaultSdccFlags,
+    );
+  };
+
+  readonly getTccFlags = () => {
+    return this.inspectConfig<string[]>(this.tccFlagsKey, this.defaultTccFlags);
+  };
+
+  readonly getCcsFlags = () => {
+    return this.inspectConfig<string[]>(this.ccsFlagsKey, this.defaultCcsFlags);
   };
 
   readonly setProfile = (profile: string) => {

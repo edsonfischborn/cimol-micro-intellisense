@@ -76,11 +76,12 @@ class CompilePc extends AbstractCommandListenner<null> {
   private readonly getCompileCommand = (workingFile: FileProps) => {
     const compilerPath = Settings.ext.getTccExePath();
     const includePaths = Settings.ext.getTccIncludePaths();
+    const configArgs = Settings.ext.getTccFlags();
     const compiledFilePath = this.getCompiledFilePath(workingFile);
+    const args = [...new Set([...configArgs])];
 
-    const args = [];
     for (const path of includePaths) {
-      args.push(` -I ${path}`);
+      args.push(`-I${path}`);
     }
 
     return `${compilerPath} ${args.join(' ')} -o ${compiledFilePath} ${workingFile.path}`;

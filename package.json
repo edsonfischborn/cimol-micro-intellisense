@@ -90,7 +90,7 @@
       },
       {
         "command": "cimol-micro-intellisense.compiler.pic",
-        "key": "ctrl+alt+f8"
+        "key": "ctrl+alt+p"
       },
       {
         "command": "cimol-micro-intellisense.compiler.changeProfile",
@@ -128,10 +128,19 @@
             },
             "order": 2
           },
+          "cimol-micro-intellisense.compiler.sdccFlags": {
+            "title": "Flags for SDCC compiler (8051)",
+            "type": "array",
+            "markdownDescription": "Example: `--std-sdcc11` `--model-small`",
+            "items": {
+              "type": "string"
+            },
+            "order": 3
+          },
           "cimol-micro-intellisense.compiler.tccExe": {
             "markdownDescription": "Tiny C compiler `tcc.exe`, used for compile `.c` -> `PC(.exe)`. Example value: `C:/8051/tcc/tcc.exe`",
             "type": "string",
-            "order": 3
+            "order": 4
           },
           "cimol-micro-intellisense.compiler.tccIncludePaths": {
             "title": "Include paths for Tiny C compiler (PC)",
@@ -140,12 +149,21 @@
             "items": {
               "type": "string"
             },
-            "order": 4
+            "order": 5
+          },
+          "cimol-micro-intellisense.compiler.tccFlags": {
+            "title": "Flags for Tiny C compiler (PC)",
+            "type": "array",
+            "markdownDescription": "Example: `-Wall` `-Werror`",
+            "items": {
+              "type": "string"
+            },
+            "order": 6
           },
           "cimol-micro-intellisense.compiler.ccsExe": {
             "markdownDescription": "CCS compiler `CCSCON.exe`, used for compile `.c` -> `PIC(.hex)`. Example value: `C:/8051/PCW/CCSCON.exe`",
             "type": "string",
-            "order": 5
+            "order": 7
           },
           "cimol-micro-intellisense.compiler.ccsIncludePaths": {
             "title": "Include paths for CCS compiler (PIC)",
@@ -154,12 +172,21 @@
             "items": {
               "type": "string"
             },
-            "order": 6
+            "order": 8
+          },
+          "cimol-micro-intellisense.compiler.ccsFlags": {
+            "title": "Flags for CCS compiler (PIC)",
+            "type": "array",
+            "markdownDescription": "Example: `+EA` `-E`",
+            "items": {
+              "type": "string"
+            },
+            "order": 9
           },
           "cimol-micro-intellisense.compiler.saveBeforeCompile": {
             "markdownDescription": "If true, save all workspace files before compiler commands",
             "type": "boolean",
-            "order": 7
+            "order": 10
           }
         }
       }

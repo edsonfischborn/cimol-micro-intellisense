@@ -37,6 +37,7 @@ export class Setup {
     compile8051.registerInVsCode();
     compilePc.registerInVsCode();
     execPc.registerInVsCode();
+    compilePic.registerInVsCode();
     changeCompilerProfile.registerInVsCode();
   };
 

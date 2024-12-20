@@ -91,11 +91,10 @@ class CompilePic extends AbstractCommandListenner<null> {
   private readonly getCompileCommand = (workingFile: FileProps) => {
     const { path } = workingFile;
     const compilerPath = Settings.ext.getCcsPath();
+    const configArgs = Settings.ext.getCcsFlags();
     const includePaths = Settings.ext.getCcsIncludePaths();
-
-    // ext args
-    const extArgs = ['+EA'];
-    const args = [...extArgs, '+STDOUT', '+PE'];
+    const requiredArgs = ['+STDOUT', '+PE'];
+    const args = [...new Set([...configArgs]), ...requiredArgs];
     args.push(`I="${includePaths?.join(';')}"`);
 
     return `${compilerPath} ${args?.join(' ')} ${path}`;
