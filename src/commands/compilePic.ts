@@ -61,7 +61,11 @@ class CompilePic extends AbstractCommandListenner<null> {
       });
 
       if (!this.isCompiledFileExists(workingFile)) {
-        const msg = 'Error: File not found. Verify the ccs message, try again.';
+        if (ccsMsg && ccsMsg.includes('Error#')) {
+          throw new Error(ccsMsg);
+        }
+
+        const msg = `Error: unknown error, compiled file not found, try execute ${compileCommand} manually.`;
         throw new Error(msg);
       }
 
@@ -93,7 +97,7 @@ class CompilePic extends AbstractCommandListenner<null> {
     const compilerPath = Settings.ext.getCcsPath();
     const configArgs = Settings.ext.getCcsFlags();
     const includePaths = Settings.ext.getCcsIncludePaths();
-    const requiredArgs = ['+STDOUT', '+PE'];
+    const requiredArgs = ['+EX', '+STDOUT'];
     const args = [...new Set([...configArgs]), ...requiredArgs];
     args.push(`I="${includePaths?.join(';')}"`);
 
