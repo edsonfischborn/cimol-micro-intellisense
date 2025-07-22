@@ -35,7 +35,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - More details on sdcc and tinyc output messages.
 - Add compile profile, used for include paths intellisense and compile command selection.
 - Add PIC compile command with ccs compiler.
-- Accept custom flags for in sdcc, tinyc and ccs compile commands.
+- Accept custom flags in sdcc, tinyc and ccs compile commands.
 
 ### Removed
 
@@ -44,4 +44,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 
-- Show warnings in sdcc compiler output message.
+- Show warnings in sdcc compiler output.
+
+## [0.0.5] - 2025-07-22
+
+### Fixed
+
+- Display errors when CSS compilation fails.
