@@ -1,7 +1,7 @@
 .compilerSidebar {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 0px;
+  padding: 0.5rem;
   user-select: none;
 }
 

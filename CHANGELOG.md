@@ -51,3 +51,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Fixed
 
 - Display errors when CSS compilation fails.
+
+## [0.0.6] - 2026-06-23
+
+### Added
+
+- Support for Visual Studio Code 1.83.x, the last Windows x86 (32-bit) release.
+
+### Fixed
+
+- Adjusted extension view container padding and spacing.
